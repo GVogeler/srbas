@@ -1,0 +1,37 @@
+PREFIX dc:<http://purl.org/dc/elements/1.1/>
+PREFIX gl:<http://www.xbrl.org/GLTaxonomy/>
+PREFIX tei:<http://www.tei-c.org/ns/1.0>
+PREFIX bk:<http://gams.uni-graz.at/rem/bookkeeping/>
+PREFIX owl:<http://www.w3.org/2002/07/owl#>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX g2o:<http://gams.uni-graz.at/onto/#>
+SELECT DISTINCT ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
+{
+    SERVICE <http://gams.uni-graz.at/sesame/sparqlendpoint>
+	{
+        ?konto bk:accountPath ?pfad .
+        ?b bk:mainAccount ?konto ;
+	       g2o:partOf ?o ;
+	       rdf:type <http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc> ;
+	       bk:amount ?a .
+	    ?a bk:num ?betrag .
+        FILTER(sameTerm(?konto, $1))
+
+        ?o dc:date ?jahr ;
+           g2o:sameAs ?mo .  
+
+        OPTIONAL {
+        ?subkonto bk:subAccountOf ?konto .
+        ?bsub bk:mainAccount ?subkonto ;
+	       g2o:partOf ?o .
+	       ?bsub rdf:type <http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc> ;
+	          bk:amount ?asub .
+	      ?asub bk:num ?subbetrag .
+        }
+    }
+    SERVICE <http://gams.uni-graz.at/mulgara/sparqlendpoint> 
+    {
+       ?mo  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
+    }
+}
+ORDER BY ?jahr ?o ?pfad ?subkonto
