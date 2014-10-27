@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- ToDo: r:sum und r:e in ein Model "itemLike" packen, damit sie auch als Unterelemente von list vorkommen können -->
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
         <teiHeader>
                 <fileDesc>
@@ -41,7 +42,6 @@
                                         mode="add">
                                         <desc>Ein Buchungsposten</desc>
                                         <classes>
-                                                <memberOf key="model.choicePart"/>
                                                 <memberOf key="model.divPart"/>
                                                 <memberOf key="model.pLike"/>
                                                 <memberOf key="att.global"/>
