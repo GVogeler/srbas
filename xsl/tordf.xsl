@@ -11,7 +11,7 @@
     <xsl:include
         href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
     <xd:doc><xd:desc><xd:p>Konvertiert ein TEI-Dokument mit Rechnungsmarkup (matches(@ana,'#bk_|#gl_') in RDF im Kontext des Editionsprojekts 'Basler Jahrrechnungen im 16. Jahrhundert'</xd:p>
-    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-10-21</xd:p></xd:desc></xd:doc>
+    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-11-01</xd:p></xd:desc></xd:doc>
     <xsl:output encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
     
     <xd:doc>
@@ -109,11 +109,19 @@
             <xsl:value-of
                 select="(sum($einnahmen/*/number(text())) - sum($ausgaben/*/number(text())))"/>
         </xsl:variable>
-        <xsl:variable name="konto" select="//tei:*[matches(@ana,'#bs_Remanet')]"/>
+        <xsl:variable name="konto-id">
+            <xsl:choose>
+                <xsl:when test="//tei:*[matches(@ana,'#bs_Remanet')]">
+                    <xsl:value-of select="//tei:*[matches(@ana,'#bs_Remanet')]/@xml:id"/>
+                </xsl:when>
+                <xsl:otherwise><xsl:value-of select="$pid"/>_balance</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <rdf:Description>
-            <xsl:attribute name="rdf:about" select="concat($base-uri,$konto/@xml:id, '_calc')"/>
+            <xsl:attribute name="rdf:about" select="concat($base-uri,$konto-id, '_calc')"/>
             <rdf:type rdf:resource="http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc"/>
             <bk:mainAccount rdf:resource="{concat($xmlBaseAccounts,'#toplevel')}"/>
+            <rdf:type rdf:resource="http://gams.uni-graz.at/rem/bookkeeping/#bk_balance"/>
             <g2o:partOf rdf:resource="http://gams.uni-graz.at/{$pid}"/>
             <bk:amount>
                 <rdf:Description>

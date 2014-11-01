@@ -20,7 +20,10 @@
     </xsl:variable>
     
     <xd:doc>
-        <xd:desc></xd:desc>
+        <xd:desc>Ausgabe der Kontenabgrage
+        Georg Vogeler, Version 2014-11-01
+        ToDo: Reihen, die nicht alle Konten enthalten werden verschoben (d.h. die leere Spalte wird mit dem Wert der nächsten Spalte ausgefüllt)
+        </xd:desc>
     </xd:doc>
     <xsl:template name="content">
         <script src="https://www.google.com/jsapi" type="text/javascript">&amp;nbsp;</script>
@@ -35,39 +38,6 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <script type="text/javascript">
-            google.load("visualization", "1", {packages:["corechart"]});
-            function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-            ['Jahr'<xsl:for-each select="$accounts/*">, '<xsl:value-of select="substring-after(.,'/#bs_')" />'</xsl:for-each>]
-            <xsl:for-each-group group-by="sr:o/@uri" select="//sr:result[sr:subkonto/@uri=$accounts/*]">
-                <xsl:sort select="sr:jahr" />
-                <xsl:variable name="objekt" select="current-group()" />
-                <xsl:text>,
-                        ['</xsl:text>
-                <xsl:value-of select="sr:jahr" />' <xsl:for-each select="$accounts/*">
-                    <xsl:text>, </xsl:text>
-                    <xsl:choose>
-                        <xsl:when test="$objekt[sr:subkonto[@uri=current()]]/sr:subbetrag != 0 ">
-                            <xsl:value-of select="$objekt[sr:subkonto[@uri=current()]]/sr:subbetrag" />
-                        </xsl:when>
-                        <xsl:otherwise>0</xsl:otherwise>
-                    </xsl:choose>
-                </xsl:for-each>
-                <xsl:text>]</xsl:text>
-            </xsl:for-each-group>
-            ]);
-            
-            var options = {
-            title: 'Stadtrechnungen Basel',
-            hAxis: {title: 'Jahr'},
-            vAxis: {title: 'Pfennige'}
-            };
-            
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-            }
-        </script>
         <div class="ym-gbox nwbox">
             <h2>Zeitreihe Kontensummen zu <xsl:value-of select="$gesuchteskonto" />
             </h2>
@@ -83,6 +53,39 @@
             </p>
             <xsl:choose>
                 <xsl:when test="$mode='graph'">
+                    <script type="text/javascript">
+                        google.load("visualization", "1", {packages:["corechart"]});
+                        function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                        ['Jahr'<xsl:for-each select="$accounts/*">, '<xsl:value-of select="substring-after(.,'/#bs_')" />'</xsl:for-each>]
+                        <xsl:for-each-group group-by="sr:o/@uri" select="//sr:result[sr:subkonto/@uri=$accounts/*]">
+                            <xsl:sort select="sr:jahr" />
+                            <xsl:variable name="objekt" select="current-group()" />
+                            <xsl:text>,
+                        ['</xsl:text>
+                            <xsl:value-of select="sr:jahr" />' <xsl:for-each select="$accounts/*">
+                                <xsl:text>, </xsl:text>
+                                <xsl:choose>
+                                    <xsl:when test="$objekt[sr:subkonto[@uri=current()]]/sr:subbetrag != 0 ">
+                                        <xsl:value-of select="$objekt[sr:subkonto[@uri=current()]]/sr:subbetrag" />
+                                    </xsl:when>
+                                    <xsl:otherwise>0</xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:for-each>
+                            <xsl:text>]</xsl:text>
+                        </xsl:for-each-group>
+                        ]);
+                        
+                        var options = {
+                        title: 'Stadtrechnungen Basel',
+                        hAxis: {title: 'Jahr'},
+                        vAxis: {title: 'Pfennige'}
+                        };
+                        
+                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                        }
+                    </script>
                     <p>
                         <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|&lt;{replace($gesuchteskonto,'#','%23')}&gt;">Tabelle</a>
                     </p>
@@ -99,21 +102,24 @@
                         <a name="table" />
                         <table>
                             <xsl:call-template name="head" />
-                            <xsl:for-each-group group-by="sr:subkonto/@uri" select="//sr:result">             
+                            <!-- GV: FixMe: wie geht das Ganze mit Daten um, in denen in einer Spalte ein Reihenwert fehlt?! -->
+                            <xsl:for-each-group group-by="sr:subkonto/@uri" select="//sr:result">
+                                <xsl:variable name="subkonto" select="current-grouping-key()"/>
                                 <tr>
                                     <td>
                                         <a href="./get?&amp;mode=&amp;params=$1|&lt;{replace(current-grouping-key(),'#','%23')}&gt;">
                                             <xsl:value-of select="substring-after(current-grouping-key(),'#')" />
                                         </a>
                                     </td>
-                                    <xsl:for-each select="current-group()">
-                                        <xsl:apply-templates select="sr:subbetrag" />
-                                    </xsl:for-each>
+                                    <xsl:for-each-group group-by="sr:o/@uri" select="//sr:result">
+                                        <xsl:sort select="concat(sr:jahr,'----',sr:o/@uri)"/>                                        <td><xsl:apply-templates select="//sr:result[sr:o/@uri=current-grouping-key() and sr:subkonto/@uri=$subkonto]/sr:subbetrag" /></td>
+                                    </xsl:for-each-group>
                                 </tr>
                             </xsl:for-each-group>
                             <tr style="font-weight:bold">
                                 <td>Gesamt:</td>
-                                <xsl:for-each-group group-by="sr:jahr" select="//sr:result">
+                                <xsl:for-each-group group-by="sr:o/@uri" select="//sr:result">
+                                    <xsl:sort select="concat(sr:jahr,'----',sr:o/@uri)"/>
                                     <xsl:text />
                                     <td>
                                         <xsl:value-of select="format-number(./sr:betrag,'###.###', 'european')" /> d.</td>
@@ -126,14 +132,14 @@
         </div>
     </xsl:template>
     <xsl:template match="sr:subbetrag">
-        <td>
-            <xsl:value-of select="format-number(.,'###.###', 'european')" /> d.</td>
+            <xsl:value-of select="format-number(.,'###.###', 'european')" /> d.
     </xsl:template>
     <xsl:template name="head">
         <thead>
             <tr>
                 <th>Konto</th>
                 <xsl:for-each select="distinct-values(//sr:result/concat(sr:jahr,'----',sr:o/@uri))">
+                    <xsl:sort select="current()"/>
                     <th>
                         <a href="{substring-after(.,'----')}">
                             <xsl:value-of select="substring-before(.,'----')" />

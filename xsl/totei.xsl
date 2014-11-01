@@ -54,9 +54,9 @@
 
 
     <xd:doc>
-        <xd:desc>Erzeug für jeden Term einen Indexeintrag des Schlagwortindex</xd:desc>
+        <xd:desc>Erzeug für jeden Term im Body einen Indexeintrag des Schlagwortindex</xd:desc>
     </xd:doc>
-    <xsl:template match="t:term">
+    <xsl:template match="t:text//t:term">
         <index indexName="schlagwort">
             <xsl:copy>
                 <xsl:copy-of select="@*"/>
@@ -119,6 +119,7 @@
                 <xsl:otherwise>seg</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        <xsl:text> </xsl:text>
         <xsl:element name="{$element-name}">
             <xsl:call-template name="id">
                 <xsl:with-param name="element" select="."/>
@@ -143,6 +144,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfundangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:lbd">
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -154,6 +156,7 @@
         <xd:desc>Umwandlung von allgemeinen Schillingangaben (kurzer Schilling)</xd:desc>
     </xd:doc>
     <xsl:template match="r:ß|r:sh">
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -165,6 +168,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfennigangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:d">
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>

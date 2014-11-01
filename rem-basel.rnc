@@ -7,7 +7,7 @@ namespace s = "http://www.ascc.net/xml/schematron"
 namespace sch = "http://purl.oclc.org/dsdl/schematron"
 namespace xlink = "http://www.w3.org/1999/xlink"
 
-# Schema generated from ODD source 2014-10-23T21:34:36Z. 
+# Schema generated from ODD source 2014-11-01T16:11:33Z. 
 # Edition: Version 2.7.0. Last updated on
 #	16th September 2014, revision 13036
 # Edition Location: http://www.tei-c.org/Vault/P5/Version 2.7.0/
@@ -1787,7 +1787,6 @@ rem_model.choicePart =
   | rem_seg
   | rem_ex
   | rem_am
-  | rem_e
   | rem_b
   | rem_price
 rem_model.imprintPart =
@@ -7911,14 +7910,15 @@ rem_e =
   ## Ein Buchungsposten
   element ns2:e {
     rem_macro.paraContent,
+    rem_att.declaring.attributes,
+    rem_att.fragmentable.attributes,
     rem_att.global.attributes,
-    rem_att.placement.attributes,
     rem_att.transcriptional.attributes,
     empty
   }
 rem_sum =
   
-  ##
+  ## Summe: Abschnittsweise und Seitenweise
   element ns2:sum {
     rem_macro.paraContent,
     rem_att.global.attributes,

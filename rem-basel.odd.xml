@@ -1,254 +1,249 @@
 <?xml version="1.0"?>
 <!-- ToDo: r:sum und r:e in ein Model "itemLike" packen, damit sie auch als Unterelemente von list vorkommen können -->
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="de">
-        <teiHeader>
-                <fileDesc>
-                        <titleStmt>
-                                <title>rem-basel</title>
-                                <author>Georg Vogeler</author>
-                        </titleStmt>
-                        <publicationStmt>
-                                <p>for use by whoever wants it</p>
-                        </publicationStmt>
-                        <notesStmt>
-                                <note type="ns">http://gams.uni-graz.at/rem/ns/1.0</note>
-                        </notesStmt>
-                        <sourceDesc>
-                                <p>created on Tuesday 24th December 2013 06:31:45 AM</p>
-                        </sourceDesc>
-                </fileDesc>
-        </teiHeader>
-        <text>
-                <front>
-                        <divGen type="toc"/>
-                </front>
-                <body>
-                        <p>TEI Customization for medieval accounting documents, to be applied to the
-                                Basel project at &lt;http://gams.uni-graz.at/rem/&gt;.</p>
-                        <schemaSpec ident="rem-basel" docLang="de" prefix="rem_" xml:lang="en">
-                                <moduleRef key="core" except=""/>
-                                <moduleRef key="tei" except=""/>
-                                <moduleRef key="header" except=""/>
-                                <moduleRef key="textstructure" except=""/>
-                                <moduleRef key="analysis" except=""/>
-                                <moduleRef key="certainty" except=""/>
-                                <moduleRef key="figures" except=""/>
-                                <moduleRef key="gaiji" except=""/>
-                                <moduleRef key="linking" except=""/>
-                                <moduleRef key="namesdates" except=""/>
-                                <moduleRef key="transcr" except=""/>
-                                <moduleRef key="msdescription" except=""/>
-                                <elementSpec ident="e" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Ein Buchungsposten</desc>
-                                        <classes>
-                                                <memberOf key="model.divPart"/>
-                                                <memberOf key="model.pLike"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.placement"/>
-                                                <memberOf key="att.transcriptional"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.paraContent"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="sum" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Summe: Abschnittsweise und Seitenweise</desc>
-                                        <classes>
-                                                <memberOf key="model.divBottom"/>
-                                                <memberOf key="model.divBottomPart"/>
-                                                <memberOf key="model.divLike"/>
-                                                <memberOf key="model.divPart"/>
-                                                <memberOf key="model.pLike"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.placement"/>
-                                                <memberOf key="att.typed"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.paraContent"/>
-                                        </content>
-                                        <attList>
-                                                <attDef ident="scope" mode="add">
-                                                        <desc>Gibt an, &#xFC;ber welchen Bereich, die
-                                                                Summe gezogen wird, z.B. bk_page,
-                                                                bk_account</desc>
-                                                </attDef>
-                                        </attList>
-                                </elementSpec>
-                                <elementSpec ident="b" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Betrag</desc>
-                                        <classes>
-                                                <memberOf key="model.choicePart"/>
-                                                <memberOf key="model.pPart.data"/>
-                                                <memberOf key="model.pPart.edit"/>
-                                                <memberOf key="model.pPart.editorial"/>
-                                                <memberOf key="model.pPart.transcriptional"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.segLike"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.paraContent"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="d" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Ma&#xDF;angabe in Pfennigen</desc>
-                                        <classes>
-                                                <memberOf key="model.measureLike"/>
-                                                <memberOf key="att.measurement"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.phraseSeq"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="lbd" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Ma&#xDF;angabe in Pfund Pfennige</desc>
-                                        <classes>
-                                                <memberOf key="model.measureLike"/>
-                                                <memberOf key="att.measurement"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.phraseSeq"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="w&#xE4;" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Ma&#xDF;angaben von Geldbetr&#xE4;gen in beliebigen
-                                                W&#xE4;hrungs-/Recheneinheiten (zu spezifizieren
-                                                &#xFC;ber das Attribut @unit)</desc>
-                                        <classes>
-                                                <memberOf key="model.measureLike"/>
-                                                <memberOf key="att.measurement"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.phraseSeq"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="sup" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc/>
-                                        <classes>
-                                                <memberOf key="model.emphLike"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.phraseSeq"/>
-                                        </content>
-                                </elementSpec>
-                                <moduleRef key="textcrit" except=""/>
-                                <elementSpec ident="p" module="core" mode="change">
-                                        <attList>
-                                                <attDef ident="place" mode="add">
-                                                  <desc>describes the place of the paragraph on the
-                                                  page if not part of the continuous flow of
-                                                  text</desc>
-                                                  <datatype minOccurs="1" maxOccurs="1">
-                                                  <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="data.enumerated"/>
-                                                  </datatype>
-                                                  <valList type="open">
-                                                  <valItem
-                                                  ident="below bottom margin top opposite overleaf above end inline inspace"
-                                                  />
-                                                  </valList>
-                                                </attDef>
-                                        </attList>
-                                </elementSpec>
-                                <elementSpec ident="klammer" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Eine Klammer, die mehrere Buchungsposten
-                                                zusammenfa&#xDF;t.</desc>
-                                        <classes>
-                                                <memberOf key="model.global"/>
-                                                <memberOf key="model.pLike"/>
-                                                <memberOf key="model.pPart.transcriptional"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.placement"/>
-                                                <memberOf key="att.spanning"/>
-                                        </classes>
-                                        <content>
-                                                <alternate>
-                                                  <classRef key="model.pLike" maxOccurs="unbounded"/>
-                                                  <elementRef key="div" minOccurs="0"
-                                                  maxOccurs="unbounded"/>
-                                                </alternate>
-                                        </content>
-                                        <attList>
-                                                <attDef ident="function" mode="add">
-                                                        <desc>Die Funktion der Klammer (aggregierend,
-                                                                wiederholend)</desc>
-                                                        <datatype minOccurs="1" maxOccurs="1">
-                                                                <rng:ref
-                                                                        xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                                        name="data.word"/>
-                                                        </datatype>
-                                                        <valList type="open">
-                                                                <valItem ident="repeat"/>
-                                                                <valItem ident=" aggregate"/>
-                                                        </valList>
-                                                </attDef>
-                                                <attDef ident="target" mode="add">
-                                                        <desc>Das Ziel der Klammer (falls nicht als r:b im
-                                                                Element enthalten)</desc>
-                                                        <datatype minOccurs="1" maxOccurs="1">
-                                                                <rng:ref
-                                                                        xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                                        name="data.pointer"/>
-                                                        </datatype>
-                                                </attDef>
-                                        </attList>
-                                </elementSpec>
-                                <elementSpec ident="sh" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Mengenangabe in Schilling &#xE0; 12 Pfennige</desc>
-                                        <classes>
-                                                <memberOf key="model.measureLike"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.measurement"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.phraseSeq"/>
-                                        </content>
-                                </elementSpec>
-                                <elementSpec ident="price" ns="http://gams.uni-graz.at/rem/ns/1.0"
-                                        mode="add">
-                                        <desc>Preisangaben/W&#xE4;hrungskonversionen</desc>
-                                        <classes>
-                                                <memberOf key="model.choicePart"/>
-                                                <memberOf key="model.pPart.data"/>
-                                                <memberOf key="model.pPart.edit"/>
-                                                <memberOf key="model.pPart.editorial"/>
-                                                <memberOf key="model.pPart.transcriptional"/>
-                                                <memberOf key="model.segLike"/>
-                                                <memberOf key="att.global"/>
-                                                <memberOf key="att.segLike"/>
-                                        </classes>
-                                        <content>
-                                                <rng:ref
-                                                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                                                  name="macro.paraContent"/>
-                                        </content>
-                                </elementSpec>
-                        </schemaSpec>
-                </body>
-        </text>
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>rem-basel</title>
+        <author>Georg Vogeler</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>for use by whoever wants it</p>
+      </publicationStmt>
+      <notesStmt>
+        <note type="ns">http://gams.uni-graz.at/rem/ns/1.0</note>
+      </notesStmt>
+      <sourceDesc>
+        <p>created on Tuesday 24th December 2013 06:31:45 AM</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <divGen type="toc"/>
+    </front>
+    <body>
+      <p>TEI Customization for medieval accounting documents, to be applied to the Basel project at
+        &lt;http://gams.uni-graz.at/rem/&gt;.</p>
+      <schemaSpec ident="rem-basel" docLang="de" prefix="rem_" xml:lang="en">
+        <moduleRef key="core" except=""/>
+        <moduleRef key="tei" except=""/>
+        <moduleRef key="header" except=""/>
+        <moduleRef key="textstructure" except=""/>
+        <moduleRef key="analysis" except=""/>
+        <moduleRef key="certainty" except=""/>
+        <moduleRef key="figures" except=""/>
+        <moduleRef key="gaiji" except=""/>
+        <moduleRef key="linking" except=""/>
+        <moduleRef key="namesdates" except=""/>
+        <moduleRef key="transcr" except=""/>
+        <moduleRef key="msdescription" except=""/>
+        <elementSpec ident="e" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Ein Buchungsposten</desc>
+          <classes>
+            <memberOf key="model.divPart"/>
+            <memberOf key="model.pLike"/>
+            <memberOf key="att.declaring"/>
+            <memberOf key="att.fragmentable"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.transcriptional"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.paraContent"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="sum" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Summe: Abschnittsweise und Seitenweise</desc>
+          <classes>
+            <memberOf key="model.divBottom"/>
+            <memberOf key="model.divBottomPart"/>
+            <memberOf key="model.divLike"/>
+            <memberOf key="model.divPart"/>
+            <memberOf key="model.pLike"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.placement"/>
+            <memberOf key="att.typed"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.paraContent"/>
+          </content>
+          <attList>
+            <attDef ident="scope" mode="add">
+              <desc>Gibt an, &#xFC;ber welchen Bereich, die Summe gezogen wird, z.B. bk_page,
+                bk_account</desc>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="b" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Betrag</desc>
+          <classes>
+            <memberOf key="model.choicePart"/>
+            <memberOf key="model.pPart.data"/>
+            <memberOf key="model.pPart.edit"/>
+            <memberOf key="model.pPart.editorial"/>
+            <memberOf key="model.pPart.transcriptional"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.segLike"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.paraContent"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="d" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Ma&#xDF;angabe in Pfennigen</desc>
+          <classes>
+            <memberOf key="model.measureLike"/>
+            <memberOf key="att.measurement"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="lbd" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Ma&#xDF;angabe in Pfund Pfennige</desc>
+          <classes>
+            <memberOf key="model.measureLike"/>
+            <memberOf key="att.measurement"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="w&#xE4;" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Ma&#xDF;angaben von Geldbetr&#xE4;gen in beliebigen W&#xE4;hrungs-/Recheneinheiten
+            (zu spezifizieren &#xFC;ber das Attribut @unit)</desc>
+          <classes>
+            <memberOf key="model.measureLike"/>
+            <memberOf key="att.measurement"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="sup" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc/>
+          <classes>
+            <memberOf key="model.emphLike"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <moduleRef key="textcrit" except=""/>
+        <elementSpec ident="p" module="core" mode="change">
+          <attList>
+            <attDef ident="place" mode="add">
+              <desc>describes the place of the paragraph on the page if not part of the continuous
+                flow of text</desc>
+              <datatype minOccurs="1" maxOccurs="1">
+                <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="data.enumerated"/>
+              </datatype>
+              <valList type="open">
+                <valItem
+                    ident="below bottom margin top opposite overleaf above end inline inspace"
+                    />
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="klammer" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Eine Klammer, die mehrere Buchungsposten zusammenfa&#xDF;t.</desc>
+          <classes>
+            <memberOf key="model.global"/>
+            <memberOf key="model.pLike"/>
+            <memberOf key="model.pPart.transcriptional"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.placement"/>
+            <memberOf key="att.spanning"/>
+          </classes>
+          <content>
+            <alternate>
+              <classRef key="model.pLike" maxOccurs="unbounded"/>
+              <elementRef key="div" minOccurs="0"
+                    maxOccurs="unbounded"/>
+            </alternate>
+          </content>
+          <attList>
+            <attDef ident="function" mode="add">
+              <desc>Die Funktion der Klammer (aggregierend, wiederholend)</desc>
+              <datatype minOccurs="1" maxOccurs="1">
+                <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="data.word"/>
+              </datatype>
+              <valList type="open">
+                <valItem ident="repeat"/>
+                <valItem ident=" aggregate"/>
+              </valList>
+            </attDef>
+            <attDef ident="target" mode="add">
+              <desc>Das Ziel der Klammer (falls nicht als r:b im Element enthalten)</desc>
+              <datatype minOccurs="1" maxOccurs="1">
+                <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="data.pointer"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="sh" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Mengenangabe in Schilling &#xE0; 12 Pfennige</desc>
+          <classes>
+            <memberOf key="model.measureLike"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.measurement"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="price" ns="http://gams.uni-graz.at/rem/ns/1.0"
+               mode="add">
+          <desc>Preisangaben/W&#xE4;hrungskonversionen</desc>
+          <classes>
+            <memberOf key="model.choicePart"/>
+            <memberOf key="model.pPart.data"/>
+            <memberOf key="model.pPart.edit"/>
+            <memberOf key="model.pPart.editorial"/>
+            <memberOf key="model.pPart.transcriptional"/>
+            <memberOf key="model.segLike"/>
+            <memberOf key="att.global"/>
+            <memberOf key="att.segLike"/>
+          </classes>
+          <content>
+            <rng:ref
+                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                    name="macro.paraContent"/>
+          </content>
+        </elementSpec>
+      </schemaSpec>
+    </body>
+  </text>
 </TEI>
