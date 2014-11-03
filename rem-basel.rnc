@@ -7920,13 +7920,13 @@ rem_sum =
   
   ## Summe: Abschnittsweise und Seitenweise
   element ns2:sum {
-    rem_macro.paraContent,
+    rem_att.declaring.attributes,
+    rem_att.fragmentable.attributes,
     rem_att.global.attributes,
-    rem_att.placement.attributes,
-    rem_att.typed.attributes,
+    rem_att.transcriptional.attributes,
     
     ## Gibt an, über welchen Bereich, die Summe gezogen wird, z.B. bk_page, bk_account
-    attribute scope { text }?,
+    ##attribute scope { text }?,
     empty
   }
 rem_b =
