@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:g2o="http://gams.uni-graz.at/onto/#" xmlns:gl="http://www.xbrl.org/GLTaxonomy/"
+    xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/"
+    xmlns:srbas="http://gams.uni-graz.at/srbas/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:g2o="http://gams.uni-graz.at/onto/#"
+    xmlns:gl="http://www.xbrl.org/GLTaxonomy/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:tei="http://www.tei-c.org/ns/1.0"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"  xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     exclude-result-prefixes="xs xd"
     version="2.0">
     <xsl:include
@@ -69,6 +74,13 @@
                 <tei:msIdentifier>
                     <xsl:value-of select="//tei:msIdentifier"/>
                 </tei:msIdentifier>
+                <srbas:from>
+                    <xsl:attribute name="rdf:datatype"
+                        >http://www.w3.org/2001/XMLSchema#int</xsl:attribute>
+                    <xsl:value-of
+                        select="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@from,'-')"
+                    />
+                </srbas:from>
                 <dc:date>
                     <xsl:attribute name="rdf:datatype"
                         >http://www.w3.org/2001/XMLSchema#int</xsl:attribute>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:rm="org.emile.roman.Roman" xmlns:s="http://www.w3.org/2001/sw/DataAccess/rf1/result" xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="#default bk t" version="2.0">
+    <xsl:import href="/archive/objects/cirilo:srbas/datastreams/STYLESHEET.MAIN/content" />
+    <xsl:param name="context" />
+    <xsl:param name="mode" />
+    <xsl:variable name="pid" select="replace(/t:TEI/t:teiHeader/t:fileDesc/t:publicationStmt/t:idno[@type='PID']/text(),'info:fedora/','')" />
+    <xsl:template name="content">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <xsl:choose>
+                    <xsl:when test="not($mode)">
+                        <div class="ym-gbox nwbox">
+                            <h3>Edition der Rechnungen der Stadt Basel</h3>
+                            <p>... Einführungstext ...</p>
+                            <ul>
+                                <li>
+                                    <a href="?mode=chrono">Chronologische Liste der Rechnungen</a>
+                                </li>
+                                <li>
+                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </xsl:when>
+                    <xsl:when test="$mode='browse'">
+                        <div class="ym-gbox nwbox">
+                            <h3>Anzeigen der Rechnungen als ...</h3>
+                            <p>
+                                <xsl:value-of select="/s:sparql/s:results/s:result[1]/s:cid/text()" />
+                            </p>
+                            <ul>
+                                <li>
+                                    <a href="?mode=chrono">Chronologische Liste der Rechnungen</a>
+                                </li>
+                                <li>
+                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
+                                </li>
+                                <li>
+                                    <a href="/archive/objects/query:srbas.keywords.list/methods/sdef:Query/get?params=">Schlagwortregister</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </xsl:when>
+                    <xsl:when test="$mode='chrono'">
+                        <div class="ym-gbox nwbox">
+                            <h3>Rechnungen</h3>
+                            <h4>
+                                <xsl:value-of select="/s:sparql/s:results/s:result[1]/s:container" />
+                            </h4>
+                            <ul class="resultList">
+                                <xsl:for-each select="/s:sparql/s:results/s:result">
+                                    <li>
+                                        <xsl:choose>
+                                            <xsl:when test="position() mod 2 = 0">
+                                                <xsl:attribute name="class">
+                                                    <xsl:text>results odd</xsl:text>
+                                                </xsl:attribute>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="class">
+                                                    <xsl:text>results even</xsl:text>
+                                                </xsl:attribute>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <a>
+                                            <xsl:attribute name="href">
+                                                <xsl:text>/archive/objects/</xsl:text>
+                                                <xsl:value-of select="substring-after(s:pid/@uri, '/')" />
+                                                <xsl:text>/methods/sdef:TEI/get</xsl:text>
+                                            </xsl:attribute>
+                                            <xsl:value-of select="s:date" />
+                                            <xsl:text>: </xsl:text>
+                                            <xsl:value-of select="s:title" />
+                                            <xsl:text>, </xsl:text>
+                                            <xsl:value-of select="s:creator" />
+                                        </a>
+                                    </li>
+                                </xsl:for-each>
+                            </ul>
+                        </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates />
+                    </xsl:otherwise>
+                </xsl:choose>
+            </div>
+        </div>
+    </xsl:template>
+</xsl:stylesheet>
