@@ -65,7 +65,6 @@
             <memberOf key="model.divPart"/>
             <memberOf key="model.pLike"/>
             <memberOf key="att.global"/>
-            <memberOf key="att.placement"/>
             <memberOf key="att.typed"/>
           </classes>
           <content>
@@ -151,24 +150,6 @@
           </content>
         </elementSpec>
         <moduleRef key="textcrit" except=""/>
-        <elementSpec ident="p" module="core" mode="change">
-          <attList>
-            <attDef ident="place" mode="add">
-              <desc>describes the place of the paragraph on the page if not part of the continuous
-                flow of text</desc>
-              <datatype minOccurs="1" maxOccurs="1">
-                <rng:ref
-                    xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                    name="data.enumerated"/>
-              </datatype>
-              <valList type="open">
-                <valItem
-                    ident="below bottom margin top opposite overleaf above end inline inspace"
-                    />
-              </valList>
-            </attDef>
-          </attList>
-        </elementSpec>
         <elementSpec ident="klammer" ns="http://gams.uni-graz.at/rem/ns/1.0"
                mode="add">
           <desc>Eine Klammer, die mehrere Buchungsposten zusammenfa&#xDF;t.</desc>
