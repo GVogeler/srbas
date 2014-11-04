@@ -63,7 +63,7 @@
                             <xsl:variable name="objekt" select="current-group()" />
                             <xsl:text>,
                         ['</xsl:text>
-                            <xsl:value-of select="sr:jahr" />' <xsl:for-each select="$accounts/*">
+                            <xsl:value-of select="sr:von"/><xsl:text>/</xsl:text><xsl:value-of select="sr:jahr" />' <xsl:for-each select="$accounts/*">
                                 <xsl:text>, </xsl:text>
                                 <xsl:choose>
                                     <xsl:when test="$objekt[sr:subkonto[@uri=current()]]/sr:subbetrag != 0 ">
@@ -138,7 +138,7 @@
         <thead>
             <tr>
                 <th>Konto</th>
-                <xsl:for-each select="distinct-values(//sr:result/concat(sr:jahr,'----',sr:o/@uri))">
+                <xsl:for-each select="distinct-values(//sr:result/concat(sr:von,'/',sr:jahr,'----',sr:o/@uri))">
                     <xsl:sort select="current()"/>
                     <th>
                         <a href="{substring-after(.,'----')}">

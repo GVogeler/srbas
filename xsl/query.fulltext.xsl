@@ -10,9 +10,14 @@
     </xsl:function>
     <xsl:template name="content">
         <script src="https://www.google.com/jsapi" type="text/javascript">&amp;nbsp;</script>
-        <div class="ym-gbox nwbox">
-            <p>Volltextsuche nur in Buchungen | href="http://gams.uni-graz.at/search/gsearch?query={$query}&amp;hitPageSize=10&amp;hitPageStart=1&amp;pid=rsbas&amp;x2={$searchXsl}"&gt;Volltextsuche im gesamten Dokument</p>
-            <xsl:apply-templates select="//sr:results" />
+        <div id="main">
+            <div xmlns:s="http://www.w3.org/2001/sw/DataAccess/rf1/result" class="ym-wrapper">
+                <div class="ym-wbox">
+                    <div class="ym-gbox nwbox">
+                        <xsl:apply-templates select="//sr:results" />
+                    </div>
+                </div>
+            </div>
         </div>
     </xsl:template>
     <xsl:template match="sr:results">
@@ -84,5 +89,8 @@
                 <xsl:value-of select="." />
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    <xsl:template match="sr:jahr">
+        <xsl:value-of select="../sr:von"/><xsl:text>/</xsl:text><xsl:value-of select="."/>
     </xsl:template>
 </xsl:stylesheet>

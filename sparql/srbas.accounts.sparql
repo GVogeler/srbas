@@ -1,11 +1,12 @@
 PREFIX dc:<http://purl.org/dc/elements/1.1/>
+PREFIX srbas:<http://gams.uni-graz.at/srbas/>
 PREFIX gl:<http://www.xbrl.org/GLTaxonomy/>
 PREFIX tei:<http://www.tei-c.org/ns/1.0>
 PREFIX bk:<http://gams.uni-graz.at/rem/bookkeeping/>
 PREFIX owl:<http://www.w3.org/2002/07/owl#>
 PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX g2o:<http://gams.uni-graz.at/onto/#>
-SELECT DISTINCT ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
+SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
 {
     SERVICE <http://gams.uni-graz.at/sesame/sparqlendpoint>
 	{
@@ -18,6 +19,7 @@ SELECT DISTINCT ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
         FILTER(sameTerm(?konto, $1))
 
         ?o dc:date ?jahr ;
+           srbas:from ?von ;
            g2o:sameAs ?mo .  
 
         OPTIONAL {
@@ -34,4 +36,4 @@ SELECT DISTINCT ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
        ?mo  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
     }
 }
-ORDER BY ?jahr ?o ?pfad ?subkonto
+ORDER BY ?jahr ?von ?o ?pfad ?subkonto

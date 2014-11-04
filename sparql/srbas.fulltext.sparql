@@ -1,4 +1,5 @@
 PREFIX dc:<http://purl.org/dc/elements/1.1/>
+PREFIX srbas:<http://gams.uni-graz.at/srbas/>
 PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
 PREFIX psys:<http://proton.semanticweb.org/protonsys#>
 PREFIX tei:<http://www.tei-c.org/ns/1.0>
@@ -9,7 +10,7 @@ PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX pext:<http://proton.semanticweb.org/protonext#>
 PREFIX g2o:<http://gams.uni-graz.at/onto/#>
 PREFIX bds: <http://www.bigdata.com/rdf/search#>
-SELECT DISTINCT ?jahr ?entry ?betrag ?text ?o ?signofamount ?konto ?pfad ("$1" as ?query)
+SELECT DISTINCT ?jahr ?von ?entry ?betrag ?text ?o ?signofamount ?konto ?pfad ("$1" as ?query)
 WHERE {
     SERVICE <http://gams.uni-graz.at/sesame/sparqlendpoint>
 	{
@@ -21,6 +22,7 @@ WHERE {
 	    ?a bk:num ?betrag ;
            bk:as ?signofamount .
 		?o dc:date ?jahr ;
+           srbas:from ?von ;
            g2o:sameAs ?mo .
        OPTIONAL {
            ?entry bk:mainAccount ?konto .
@@ -31,4 +33,4 @@ WHERE {
        ?mo  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
        }   
 }
-ORDER BY ?jahr ?o ?pfad ?entry
+ORDER BY ?jahr ?von ?o ?pfad ?entry
