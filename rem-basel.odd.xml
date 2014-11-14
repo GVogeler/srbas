@@ -5,10 +5,11 @@
     <fileDesc>
       <titleStmt>
         <title>rem-basel</title>
-        <author>Georg Vogeler</author>
+        <author ref="#GV">Georg Vogeler</author>
       </titleStmt>
       <publicationStmt>
-        <p>for use by whoever wants it</p>
+        <publisher>Zentrum für Informationsmodellierung - Austrian Centre for Digital Humanities, Universität Graz</publisher>
+        <availability><licence><ref target="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</ref></licence></availability>
       </publicationStmt>
       <notesStmt>
         <note type="ns">http://gams.uni-graz.at/rem/ns/1.0</note>
@@ -17,6 +18,18 @@
         <p>created on Tuesday 24th December 2013 06:31:45 AM</p>
       </sourceDesc>
     </fileDesc>
+    <encodingDesc>
+      <projectDesc>
+        <p>
+          <listPerson>
+            <person xml:id="GV"><persName>Georg Vogeler</persName></person>
+          </listPerson>
+        </p>
+      </projectDesc>
+    </encodingDesc>
+    <revisionDesc>
+      <change when="2014-11-14" who="#GV">Added r:exp (to replace r:sup)</change>
+    </revisionDesc>
   </teiHeader>
   <text>
     <front>
@@ -147,6 +160,17 @@
             <rng:ref
                     xmlns:rng="http://relaxng.org/ns/structure/1.0"
                     name="macro.phraseSeq"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="exp" ns="http://gams.uni-graz.at/rem/ns/1.0"
+          mode="add">
+          <classes>
+            <memberOf key="model.emphLike"/>
+          </classes>
+          <content>
+            <rng:ref
+              xmlns:rng="http://relaxng.org/ns/structure/1.0"
+              name="macro.phraseSeq"/>
           </content>
         </elementSpec>
         <moduleRef key="textcrit" except=""/>

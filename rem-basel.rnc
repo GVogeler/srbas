@@ -7,13 +7,13 @@ namespace s = "http://www.ascc.net/xml/schematron"
 namespace sch = "http://purl.oclc.org/dsdl/schematron"
 namespace xlink = "http://www.w3.org/1999/xlink"
 
-# Schema generated from ODD source 2014-11-04T10:40:50Z. 
+# Schema generated from ODD source 2014-11-14T11:20:05Z. 
 # Edition: Version 2.7.0. Last updated on
 #	16th September 2014, revision 13036
 # Edition Location: http://www.tei-c.org/Vault/P5/Version 2.7.0/
 #
 
-#
+# CC-BY 4.0
 rem_macro.paraContent =
   (text
    | rem_model.gLike
@@ -1057,6 +1057,7 @@ rem_model.emphLike =
   | rem_term
   | rem_title
   | rem_sup
+  | rem_exp
 rem_model.emphLike_alternation =
   rem_foreign
   | rem_emph
@@ -1067,6 +1068,7 @@ rem_model.emphLike_alternation =
   | rem_term
   | rem_title
   | rem_sup
+  | rem_exp
 rem_model.emphLike_sequence =
   rem_foreign,
   rem_emph,
@@ -1076,7 +1078,8 @@ rem_model.emphLike_sequence =
   rem_gloss,
   rem_term,
   rem_title,
-  rem_sup
+  rem_sup,
+  rem_exp
 rem_model.emphLike_sequenceOptional =
   rem_foreign?,
   rem_emph?,
@@ -1086,7 +1089,8 @@ rem_model.emphLike_sequenceOptional =
   rem_gloss?,
   rem_term?,
   rem_title?,
-  rem_sup?
+  rem_sup?,
+  rem_exp?
 rem_model.emphLike_sequenceOptionalRepeatable =
   rem_foreign*,
   rem_emph*,
@@ -1096,7 +1100,8 @@ rem_model.emphLike_sequenceOptionalRepeatable =
   rem_gloss*,
   rem_term*,
   rem_title*,
-  rem_sup*
+  rem_sup*,
+  rem_exp*
 rem_model.emphLike_sequenceRepeatable =
   rem_foreign+,
   rem_emph+,
@@ -1106,7 +1111,8 @@ rem_model.emphLike_sequenceRepeatable =
   rem_gloss+,
   rem_term+,
   rem_title+,
-  rem_sup+
+  rem_sup+,
+  rem_exp+
 rem_model.highlighted = rem_model.hiLike | rem_model.emphLike
 rem_model.dateLike = rem_date | rem_time
 rem_model.dateLike_alternation = rem_date | rem_time
@@ -7955,6 +7961,10 @@ rem_sup =
   
   ##
   element ns2:sup { rem_macro.phraseSeq }
+rem_exp =
+  
+  ##
+  element ns2:exp { rem_macro.phraseSeq }
 rem_klammer =
   
   ## Eine Klammer, die mehrere Buchungsposten zusammenfaßt.
