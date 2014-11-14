@@ -18,6 +18,7 @@
         <p>created on Tuesday 24th December 2013 06:31:45 AM</p>
       </sourceDesc>
     </fileDesc>
+<<<<<<< HEAD
     <encodingDesc>
       <projectDesc>
         <p>
@@ -29,6 +30,10 @@
     </encodingDesc>
     <revisionDesc>
       <change when="2014-11-14" who="#GV">Added r:exp (to replace r:sup)</change>
+=======
+    <revisionDesc>
+      <change>r:e, r:sum and tei:p reduced to p-model, GV 2014-11-03</change>
+>>>>>>> master
     </revisionDesc>
   </teiHeader>
   <text>
@@ -79,18 +84,21 @@
             <memberOf key="model.pLike"/>
             <memberOf key="att.global"/>
             <memberOf key="att.typed"/>
+            <memberOf key="att.declaring"/>
+            <memberOf key="att.fragmentable"/>
+            <memberOf key="att.transcriptional"/>
           </classes>
           <content>
             <rng:ref
                     xmlns:rng="http://relaxng.org/ns/structure/1.0"
                     name="macro.paraContent"/>
           </content>
-          <attList>
+<!--          <attList>
             <attDef ident="scope" mode="add">
               <desc>Gibt an, &#xFC;ber welchen Bereich, die Summe gezogen wird, z.B. bk_page,
                 bk_account</desc>
             </attDef>
-          </attList>
+          </attList>-->
         </elementSpec>
         <elementSpec ident="b" ns="http://gams.uni-graz.at/rem/ns/1.0"
                mode="add">
@@ -162,6 +170,7 @@
                     name="macro.phraseSeq"/>
           </content>
         </elementSpec>
+<<<<<<< HEAD
         <elementSpec ident="exp" ns="http://gams.uni-graz.at/rem/ns/1.0"
           mode="add">
           <classes>
@@ -173,6 +182,8 @@
               name="macro.phraseSeq"/>
           </content>
         </elementSpec>
+=======
+>>>>>>> master
         <moduleRef key="textcrit" except=""/>
         <elementSpec ident="klammer" ns="http://gams.uni-graz.at/rem/ns/1.0"
                mode="add">
@@ -182,8 +193,6 @@
             <memberOf key="model.pLike"/>
             <memberOf key="model.pPart.transcriptional"/>
             <memberOf key="att.global"/>
-            <memberOf key="att.placement"/>
-            <memberOf key="att.spanning"/>
           </classes>
           <content>
             <alternate>
