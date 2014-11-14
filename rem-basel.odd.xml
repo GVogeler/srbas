@@ -29,7 +29,7 @@
     </encodingDesc>
     <revisionDesc>
       <change when="2014-11-14" who="#GV">Added r:exp (to replace r:sup)</change>
-      <change>r:e, r:sum and tei:p reduced to p-model, GV 2014-11-03</change>
+      <change when="2014-11-03" who="#GV">r:e, r:sum and tei:p reduced to p-model</change>
     </revisionDesc>
   </teiHeader>
   <text>
