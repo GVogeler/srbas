@@ -18,7 +18,6 @@
         <p>created on Tuesday 24th December 2013 06:31:45 AM</p>
       </sourceDesc>
     </fileDesc>
-<<<<<<< HEAD
     <encodingDesc>
       <projectDesc>
         <p>
@@ -30,10 +29,7 @@
     </encodingDesc>
     <revisionDesc>
       <change when="2014-11-14" who="#GV">Added r:exp (to replace r:sup)</change>
-=======
-    <revisionDesc>
       <change>r:e, r:sum and tei:p reduced to p-model, GV 2014-11-03</change>
->>>>>>> master
     </revisionDesc>
   </teiHeader>
   <text>
@@ -170,7 +166,6 @@
                     name="macro.phraseSeq"/>
           </content>
         </elementSpec>
-<<<<<<< HEAD
         <elementSpec ident="exp" ns="http://gams.uni-graz.at/rem/ns/1.0"
           mode="add">
           <classes>
@@ -182,8 +177,6 @@
               name="macro.phraseSeq"/>
           </content>
         </elementSpec>
-=======
->>>>>>> master
         <moduleRef key="textcrit" except=""/>
         <elementSpec ident="klammer" ns="http://gams.uni-graz.at/rem/ns/1.0"
                mode="add">
