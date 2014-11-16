@@ -85,7 +85,8 @@
     </xsl:template>
 
     <xd:doc>
-        <xd:desc>Umwandlung der Summen</xd:desc>
+        <xd:desc><xd:p>Umwandlung der Summen</xd:p>
+        <xd:p><xd:b>FixMe:</xd:b> die Ersetzung durch closer ist ein Erfahrungswert und nicht aus der Rechnungslogik/dem TEI-Modell abgeleitet.</xd:p></xd:desc>
     </xd:doc>
     <xsl:template match="r:sum">
         <xsl:variable name="ename">
@@ -97,14 +98,30 @@
                 <xsl:otherwise>p</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:element name="{$ename}">
-            <xsl:call-template name="id">
-                <xsl:with-param name="element" select="."/>
-            </xsl:call-template>
-            <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
-            </xsl:attribute>
-            <xsl:apply-templates/>
-        </xsl:element>
+        <xsl:choose>
+            <xsl:when test="preceding-sibling::*/name()='div' and following-sibling::*/name()='div'">
+                <div>
+                    <xsl:element name="p">
+                        <xsl:call-template name="id">
+                            <xsl:with-param name="element" select="."/>
+                        </xsl:call-template>
+                        <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
+                        </xsl:attribute>
+                        <xsl:apply-templates/>
+                    </xsl:element>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:element name="{$ename}">
+                    <xsl:call-template name="id">
+                        <xsl:with-param name="element" select="."/>
+                    </xsl:call-template>
+                    <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
+                    </xsl:attribute>
+                    <xsl:apply-templates/>
+                </xsl:element>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     <xsl:template match="@r:scope"/>
 

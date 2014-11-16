@@ -252,6 +252,8 @@
         </rdf:Description>
     </xsl:template>
     <xsl:template name="betrag">
+        <!-- ToDo: Umrechnung zwischen beliebigen Maßangaben, also 
+                from (./@unit) und to als Parameter, mit Default und wenn @unit nicht in der Conversion-Tabelle vorhanden ist, erhalt der Maßangabe -->
         <xsl:param name="vorzeichen"/>
         <xsl:variable name="vorz" select="number(concat($vorzeichen,'1'))"/>
         <xsl:choose>
@@ -284,6 +286,7 @@
                 <xsl:value-of select="$id"/>
             </xsl:attribute>
             <rdf:type>
+                <!-- ToDo: mehrere Inhalte in @ana werden nicht richtig ausgewertet -->
                 <xsl:attribute name="rdf:resource"
                     select="replace(./@ana,'bk:','http://gams.uni-graz.at/rem/bookkeeping/#')"/>
             </rdf:type>
@@ -300,13 +303,14 @@
                 </xsl:call-template>
             </xsl:for-each>
             <xsl:apply-templates
-                select="./tei:measure[./@type='currency'] | .//tei:*[@ana='#bk_amount']"/>
+                select="./tei:measure[./@type='currency'] | descendant::tei:*[matches(@ana,'#(bk|gl)_amount')]"/>
             <bk:inhalt>
                 <xsl:apply-templates mode="text"/>
             </bk:inhalt>
         </rdf:Description>
     </xsl:template>
-    <xsl:template match="tei:measure[./@type='currency']|tei:*[@ana='#bk_amount']" priority="-1">
+    <xsl:template match="tei:measure[./@type='currency']|tei:*[matches(@ana,'#(bk|gl)_amount')]" priority="-1">
+        <!-- ToDo: die Konstruktion mit measure[@type='currency'] sollte in einem allgemeinen Stylesheet raus, weil sie zu unpräzise ist: Preisangaben z.B. -->
         <xsl:element name="bk:amount">
             <xsl:element name="rdf:Description">
                 <xsl:variable name="vorzeichen">
