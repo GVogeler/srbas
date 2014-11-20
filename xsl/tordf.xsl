@@ -16,7 +16,10 @@
     <xsl:include
         href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
     <xd:doc><xd:desc><xd:p>Konvertiert ein TEI-Dokument mit Rechnungsmarkup (matches(@ana,'#bk_|#gl_') in RDF im Kontext des Editionsprojekts 'Basler Jahrrechnungen im 16. Jahrhundert'</xd:p>
-    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-11-01</xd:p></xd:desc></xd:doc>
+    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-11-01</xd:p>
+    <xd:ul>
+        <xd:li></xd:li>
+    </xd:ul></xd:desc></xd:doc>
     <xsl:output encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
     
     <xd:doc>
@@ -81,13 +84,13 @@
                         select="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@from,'-')"
                     />
                 </srbas:from>
-                <dc:date>
+                <xsl:if test="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@to,'-')!=''"><dc:date>
                     <xsl:attribute name="rdf:datatype"
                         >http://www.w3.org/2001/XMLSchema#int</xsl:attribute>
                     <xsl:value-of
                         select="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@to,'-')"
                     />
-                </dc:date>
+                </dc:date></xsl:if>
             </rdf:Description>
             <xsl:apply-templates
                 select="//tei:taxonomy[matches(@ana,'#bk_account') or matches(@ana,'#gl_account')]"/>
