@@ -77,13 +77,13 @@
                 <tei:msIdentifier>
                     <xsl:value-of select="//tei:msIdentifier"/>
                 </tei:msIdentifier>
-                <srbas:from>
+                <xsl:if test="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@from,'-')!=''"><srbas:from>
                     <xsl:attribute name="rdf:datatype"
                         >http://www.w3.org/2001/XMLSchema#int</xsl:attribute>
                     <xsl:value-of
                         select="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@from,'-')"
                     />
-                </srbas:from>
+                </srbas:from></xsl:if>
                 <xsl:if test="//tei:teiHeader//tei:sourceDesc//tei:origDate[1]/substring-before(@to,'-')!=''"><dc:date>
                     <xsl:attribute name="rdf:datatype"
                         >http://www.w3.org/2001/XMLSchema#int</xsl:attribute>
