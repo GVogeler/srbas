@@ -312,6 +312,9 @@
             </bk:inhalt>
         </rdf:Description>
     </xsl:template>
+    <xsl:template match="tei:measure/text()" mode="text">
+        <xsl:text> </xsl:text><xsl:value-of select="."/><xsl:text> </xsl:text>
+    </xsl:template>
     <xsl:template match="tei:measure[./@type='currency']|tei:*[matches(@ana,'#(bk|gl)_amount')]" priority="-1">
         <!-- ToDo: die Konstruktion mit measure[@type='currency'] sollte in einem allgemeinen Stylesheet raus, weil sie zu unpräzise ist: Preisangaben z.B. -->
         <xsl:element name="bk:amount">
