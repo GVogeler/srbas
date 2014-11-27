@@ -309,7 +309,17 @@
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>Vergibt eine PID, wenn es noch keine gibt</xd:desc>
+    </xd:doc>
+    <xsl:template match="/t:TEI/t:teiHeader[1]/t:fileDesc[1]/t:publicationStmt[1]">
+        <xsl:apply-templates/>
+        <xsl:if test="not(t:idno[@type='PID'])">
+            <idno type="PID">o:srbas.<xsl:value-of select="../t:sourceDesc/t:msDesc/t:msContents/t:p/t:origDate/substring-before(@from,'-')"></xsl:value-of></idno>
+        </xsl:if>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Expandiert XIncludes</xd:desc>
     </xd:doc>
