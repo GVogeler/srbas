@@ -80,6 +80,7 @@
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_entry</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </p>
     </xsl:template>
@@ -107,6 +108,7 @@
                         </xsl:call-template>
                         <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                         </xsl:attribute>
+                        <xsl:apply-templates select="@*"/>
                         <xsl:apply-templates/>
                     </xsl:element>
                 </div>
@@ -118,6 +120,7 @@
                     </xsl:call-template>
                     <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                     </xsl:attribute>
+                    <xsl:apply-templates select="@*"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:otherwise>
@@ -142,6 +145,7 @@
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_amount</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
@@ -153,6 +157,7 @@
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </measure>
     </xsl:template>
@@ -166,6 +171,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">lb</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> lb</measure>
     </xsl:template>
 
@@ -178,6 +184,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">ß-w</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> ß</measure>
     </xsl:template>
 
@@ -190,6 +197,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">d</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> d</measure>
     </xsl:template>
 
@@ -289,6 +297,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:attribute name="spanTo" select="concat('#',generate-id(./*[last()]))"/>
+            <xsl:apply-templates select="@*"/>
         </metamark>
         <xsl:apply-templates/>
     </xsl:template>
