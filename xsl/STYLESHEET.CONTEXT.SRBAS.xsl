@@ -17,7 +17,7 @@
                                     <a href="?mode=chrono">Chronologische Liste der Rechnungen</a>
                                 </li>
                                 <li>
-                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?mode=graph&amp;params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
+                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
                                 </li>
                             </ul>
                         </div>
@@ -33,7 +33,7 @@
                                     <a href="?mode=chrono">Chronologische Liste der Rechnungen</a>
                                 </li>
                                 <li>
-                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?mode=graph&amp;params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
+                                    <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|%3Chttp://gams.uni-graz.at/rem/%23toplevel%3E">Nach Konten aufgegliedert</a>
                                 </li>
                                 <li>
                                     <a href="/archive/objects/query:srbas.keywords.list/methods/sdef:Query/get?params=">Schlagwortregister</a>
