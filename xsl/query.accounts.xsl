@@ -21,8 +21,7 @@
     
     <xd:doc>
         <xd:desc>Ausgabe der Kontenabgrage
-        Georg Vogeler, Version 2014-11-01
-        ToDo: Reihen, die nicht alle Konten enthalten werden verschoben (d.h. die leere Spalte wird mit dem Wert der nächsten Spalte ausgefüllt)
+        Georg Vogeler, Maximilian Müller, Version 2014-12-18        
         </xd:desc>
     </xd:doc>
     <xsl:template name="content">
@@ -38,9 +37,12 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <div class="ym-gbox nwbox">
-            <h2>Zeitreihe Kontensummen zu <xsl:value-of select="$gesuchteskonto" />
-            </h2>
+        <div id="main">
+            <div xmlns:s="http://www.w3.org/2001/sw/DataAccess/rf1/result" class="ym-wrapper">
+                <div class="ym-wbox">
+                    <div class="ym-gbox nwbox">
+            <h2>Zeitreihe Kontensummen zu <xsl:value-of select="$gesuchteskonto" /></h2>
+            <p>Alle Beträge in Pfennig.</p>
             <p>
                 <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|&lt;http://gams.uni-graz.at/rem/%23toplevel&gt;">Top Level</a>
                 <xsl:for-each select="tokenize(//sr:result[1]/sr:pfad[1],'/')">
@@ -122,7 +124,7 @@
                                     <xsl:sort select="concat(sr:jahr,'----',sr:o/@uri)"/>
                                     <xsl:text />
                                     <td>
-                                        <xsl:value-of select="format-number(./sr:betrag,'###.###', 'european')" /> d.</td>
+                                        <xsl:value-of select="format-number(./sr:betrag,'###.###', 'european')" /></td>
                                 </xsl:for-each-group>
                             </tr>
                         </table>
@@ -130,10 +132,11 @@
                 </xsl:otherwise>
             </xsl:choose>
         </div>
+                </div>
+            </div>
+        </div>
     </xsl:template>
-    <xsl:template match="sr:subbetrag">
-            <xsl:value-of select="format-number(.,'###.###', 'european')" /> d.
-    </xsl:template>
+    <xsl:template match="sr:subbetrag"><xsl:value-of select="format-number(.,'###.###', 'european')" /></xsl:template>
     <xsl:template name="head">
         <thead>
             <tr>

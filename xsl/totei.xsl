@@ -36,12 +36,14 @@
     <xsl:template match="comment()|text()|@*" priority="-2">
         <xsl:copy/>
     </xsl:template>
-    
     <xd:doc>
         <xd:desc>Ein paar Attribute will ich nicht kopieren, weil sie aus Defaultangaben der TEI stammen.</xd:desc>
     </xd:doc>
     <xsl:template match="@instant|@status|@part|@scope" priority="-1"/>
-    
+    <xd:doc>
+        <xd:desc>Außer @part, @instant, @status, ... </xd:desc>
+    </xd:doc>
+    <xsl:template match="@part|@instant|@status|@scope|@uniform|@sample" priority="-1"/>
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
@@ -150,7 +152,7 @@
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_amount</xsl:attribute>
             <xsl:apply-templates select="@*"/><xsl:apply-templates/>
-        </xsl:element>
+        </xsl:element><xsl:text> </xsl:text>
     </xsl:template>
 
     <xd:doc>
@@ -215,7 +217,7 @@
     <xsl:template match="r:sup|r:exp">
         <seg rend="super">
             <xsl:apply-templates/>
-        </seg>
+        </seg><xsl:text> </xsl:text>
     </xsl:template>
 
 
