@@ -1,0 +1,970 @@
+
+/*Normalisierung YAML*/
+
+
+/*YAML forms/gray-theme*/
+.ym-form {
+		background:none;
+		border:none;
+		margin: 1.5em 0 0 0;
+		padding: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+	
+/*YAML navigation/h-list*/	
+	.ym-hlist {
+		overflow:inherit;
+	}
+	
+	.ym-hlist ul li a,
+	.ym-hlist ul li strong {
+		color:#333;
+		text-shadow: 0;
+		
+	}
+	
+	.ym-hlist ul li a:focus,
+	.ym-hlist ul li a:hover,
+	.ym-hlist ul li a:active  {
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+	}
+	
+		.ym-hlist ul li.active {
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+	}
+	
+	.ym-searchform .ym-searchfield {
+		-webkit-box-shadow: 0;
+		-moz-box-shadow: 0;
+		box-shadow: 0;
+	}
+	
+	.ym-searchform .ym-searchbutton {
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+	}
+
+/*YAML screen/screen-FULLPAGE-layout.css*/	
+  .ym-wrapper {
+		max-width: 960px;
+	}
+html {background-color: #475862;}
+
+/*YAML screen/typography.css*/	
+body {
+		font-family: "Open Sans", Arial, Helvetica, sans-serif;
+		
+	}	
+	
+	
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Droid Serif", Georgia, "Times New Roman", Times, serif;
+	}
+
+	h1 {
+		font-size:200%;
+		margin-bottom: 0;
+	}
+
+	h2 {
+		font-size:140%;
+		font-family: "Open Sans", Arial, Helvetica, sans-serif;
+		font-style: italic;
+		margin-bottom: 0.8em;
+		margin-top: 0.4em;
+	}
+	
+	h3 {
+	    padding-top: 1.125em; 
+	    color: #30783b;
+	    font-size: 130%;
+	    line-height: 1.8em;	    
+	}
+	
+	h4 {
+		font-size: 120%;
+		color: #333333; 
+		font-family: 'Open Sans'; 
+		font-style:italic;
+	}
+	
+	h5 {
+	    font-family: 'Open Sans'; 
+	    color: #333333;  
+	}
+	
+	blockquote, cite, q {
+		font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	}
+	
+	a {
+		color:#30783b;
+	}
+	
+	a:hover,
+	a:focus {
+		background-color: #999999;
+	}
+
+
+
+
+
+
+
+/*
+### ErgÃ¤nzungen Header ###
+*/
+body {
+    background-color: #e8e8e8; 
+    color: #474747;
+}
+div.unilogo {
+    float: right;
+}
+
+div a.unilogo {
+    width: 73px; 
+    height: 62px; 
+    text-decoration: none; 
+    background: none;
+}
+header {
+    background-color: #30783b;
+}
+
+header div.ym-wbox {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+header h1, header h2 {
+    color: #ffffff;
+}
+/*
+######
+*/
+
+
+/*
+### Boxmodell ###
+*/
+
+
+
+div.ym-g50  {
+    margin-top: 20px;
+}
+
+
+div.ym-g960-8 div.ym-gbox {
+    margin-top: 1.4em;
+}
+
+
+div.ym-g960-4 div.ym-gbox {
+    padding-left: 1em; 
+    padding-right: 1em; 
+    background-color: #ffffff; 
+    padding-bottom: 2em;  
+    margin-right: 0;
+    margin-top: 1.4em;
+}
+
+div.ym-g960-4 div.ym-gbox img {
+    background: none;
+}
+
+
+
+div.noEqualize {
+    margin-top: 0;
+}
+div div.ym-g960-4 div.imgbox {
+     padding-left: 0; 
+     background: none; 
+     margin-top: 1.4em;
+}
+
+div.imgbox p {
+    width:308px; 
+    height: 194px; 
+    border: 1px solid #aaaaaa;
+}
+
+div.imgbox p a {
+    background:none;
+}
+
+div.imgbox p a img.lit {
+    margin: 0; 
+    padding: 0;
+}
+
+div.imgbox p + p {
+    margin-top: 1.4em;
+}
+                                  
+
+div#main {
+    clear: both;
+    margin-bottom: 1.4em;
+    margin-top: 1.4em;
+}
+
+section.box.info {
+    background-color: #ffffff;
+    border:none; 
+}
+
+div#main section.ym-grid.content {
+    margin-top: 1.5em;  
+    background-color: #ffffff;
+}
+
+section.ym-grid div.content {
+    padding-left:1.5em; 
+    padding-right: 1.5em;
+}
+
+div#main div.ym-gbox.wbox {
+    margin-left: 0; 
+    padding-left: 1.5em; 
+    padding-right: 1.5em;
+    background-color: #ffffff;  
+    margin-top: 1.4em;
+ 
+    
+}
+
+div#main div.ym-gbox.wbox-r {
+    margin-right: 0; 
+    padding-left: 1.5em; 
+    padding-right: 1.5em;
+    background-color: #ffffff;   
+    margin-top: 1.4em;
+}
+
+
+div.ym-gbox.index {
+    min-height: 550px;
+}
+
+
+div.wbox {
+    padding-bottom: 1.5em;
+}
+
+div.nwbox {
+    margin-left: 0;
+}
+
+div#main div.ym-gbox.mTop {
+    padding-top: 1.5em; 
+    margin-top: 20px;
+}
+
+
+/*
+###### Navigation
+*/
+
+nav#nav {
+    background-color: #475862;
+    }
+
+div.ym-hlist {
+    background-color: #475862;
+    }
+
+ul#unav {
+    padding-left: 0;
+}
+                            
+
+/*
+### ErgÃ¤nzungen Footer ###
+*/
+
+footer {
+    background-color: #475862; 
+    padding-bottom: 4em;
+    margin-top: 0;
+}
+
+
+footer div.gbox-r {
+    margin-right: 0;
+    padding-left: 0;
+    }
+
+footer div.gbox-l {
+    margin-left: 0;
+    padding-right: 0;
+    }
+
+
+footer h6 {
+     color: #ffffff;
+     background-color: inherit;
+     border-bottom: 1px solid #ffffff;
+     margin-bottom: 1em;
+}
+
+footer p {
+    color: #ffffff;
+    margin-top: 0;
+}
+
+footer p.logoGAMS {
+    margin-top: 1em;
+}
+
+footer p.logoGAMS a {
+    background: none;
+}
+
+footer a:link, footer a:visited {
+    color: #ffffff;
+}
+
+
+/*Ausgabe der Einzeltexte*/
+div#main div.ym-gbox p.functions {
+    margin-top: 20px; 
+    padding-top: 0.5em; 
+    margin-bottom: 0; 
+    padding-bottom: 0;
+    border-bottom: 1px solid #dddddd;
+}
+
+div#main div.ym-gbox p.functions span.TEI, span.TEI {
+    float: right; 
+    padding-left: 0.5em; 
+    padding-right: 0.3em;
+}
+
+
+div#main div.ym-gbox p.functions span.TEI a, span.TEI a {
+    background: none;
+}
+
+div#main div.ym-gbox p.functions span.permalink {
+    font-size: 0.9em; 
+    color: #666666;
+}
+
+h5.dist {
+    padding-top: 1em;
+}
+
+
+/*Auflistung der Texte - Context*/
+
+ul.resultList {
+     list-style: none; 
+     margin-left: 0; 
+     padding-left: 0;
+}
+
+li.results {
+    color: #474747; 
+    margin-left: 0; 
+    padding-right: 0.5em; 
+    padding-left: 0.5em; 
+    padding-top: 0.3em; 
+    padding-bottom: 0.3em; 
+    line-height: 1.6em;
+}
+
+li.results.even {
+    border-bottom: 1px solid #dddddd; 
+    border-top: 1px solid #dddddd; 
+    background-color: #f4f4f4;
+}
+
+
+li.results a:link, li.results a:hover, li.results a:active, li.results a:visited {
+     color: #474747 !important;
+     background: none;
+}
+
+p.hitpage {
+     float: right;
+}
+
+div#multiLinkPopup, span.ui-dialog-title {
+    text-align: left;
+    font-size: 0.85em;
+    line-height: 2em;
+}
+
+div#multiLinkPopup button.verteilButton {
+    text-align: left;
+}
+
+button.verteilButton:before {
+    content: " " url(/reko/img/iconList.gif) " "; 
+}
+
+ul#themen {
+     margin-left: 0em;
+     list-style: none;
+}
+
+ul#themen li {
+    margin-left: 0;
+    list-style: none;
+    background-color: #ffffff;
+}
+
+ul#themen ul {
+    background-color: #ffffff;
+    list-style: none;
+}
+
+ul#themen ul li {
+    background-color: #ffffff;
+    list-style: none;
+}
+
+ul#themen li span {
+    display: block;
+}
+
+ul#themen > li {
+    margin-bottom:2em;
+}
+
+button.Struktur-VerhÃ¤ltnis-Funktion.themen, span.Struktur-VerhÃ¤ltnis-Funktion.themen.active, ul#themen li span.Struktur-VerhÃ¤ltnis-Funktion {
+    background-color: #FFFF99;
+    border: none;
+}
+
+button.TextreprÃ¤sentant.themen, span.TextreprÃ¤sentant.themen.active, ul#themen li span.TextreprÃ¤sentant {
+    background-color: #ccffcc;
+    border: none;
+}
+button.Wirkung-Ergebnis.themen, span.Wirkung-Ergebnis.themen.active, ul#themen li span.Wirkung-Ergebnis {
+    background-color: #ccffff;
+    border: none;
+}
+button.RealitÃ¤tskonzept.themen, span.RealitÃ¤tskonzept.themen.active, ul#themen li span.RealitÃ¤tskonzept {
+    background-color: #dddddd;
+    border: none;
+}
+
+h5.kategorien {
+    font-size: 1.1em;  
+    margin-bottom: 0; 
+    padding-bottom: 0;  
+    margin-top: 1em;
+}
+
+ul#kategorien {
+     list-style: none; 
+     margin-top: 1em;
+     margin-left: 0em;
+}
+
+ul#kategorien li {
+    margin-left: 0;
+    list-style: none;
+    background-color: #ffffff;  
+}
+
+ul#kategorien ul {
+   list-style: none;
+}
+
+
+ul#kategorien ul li {
+    background-color: #ffffff;
+    list-style: none;
+}
+
+ul#kategorien li span {
+    display: block;
+}
+
+ul#kategorien > li {
+    margin-bottom: 2em;
+}
+
+
+.kategorien.verteilButton {
+    border: none;
+    background: none;
+}
+
+.Ã„sthetik.active, div.index span.Ã„sthetik, li span.Ã„sthetik {
+    border-bottom: 3px solid #ffcc33;
+}
+.Besonderer_Begriff.active, div.index span.Besonderer_Begriff, li span.Besonderer_Begriff {
+    border-bottom: 3px solid #ff9900;
+}
+.Disziplin_und_Stil.active, div.index span.Disziplin_und_Stil, li span.Disziplin_und_Stil {
+    border-bottom: 3px solid #ff6600;
+}
+.Episteme.active, div.index span.Episteme, li span.Episteme {
+    border-bottom: 3px solid #ff3300;
+}
+.Epoche_und_StrÃ¶mung.active, div.index span.Epoche_und_StrÃ¶mung, li span.Epoche_und_StrÃ¶mung {
+    border-bottom: 3px solid #99cc33;
+}
+.Feld.active, h6.Feld .active, div.index span.Feld, li span.Feld {
+    border-bottom: 3px solid #66cc33;
+}
+.Form.active, div.index span.Form, li span.Form {
+    border-bottom: 3px solid #339900;
+}
+.Medium.active, div.index span.Medium, li span.Medium {
+    border-bottom: 3px solid #009900;
+}
+.Person.active, div.index span.Person, li span.Person {
+    border-bottom: 3px solid #33ccff;
+}
+.RealitÃ¤tsbegriff.active, div.index span.RealitÃ¤tsbegriff,  li span.RealitÃ¤tsbegriff {
+    border-bottom: 3px solid #00ccff;
+}
+button.RealitÃ¤tskonzept.active.kategorien, span.RealitÃ¤tskonzept.active.kategorien, div.index span.RealitÃ¤tskonzept, ul#kategorien li span.RealitÃ¤tskonzept{
+    border-bottom: 3px solid #0099cc;
+}
+button.Struktur-VerhÃ¤ltnis-Funktion.active.kategorien, span.Struktur-VerhÃ¤ltnis-Funktion.active.kategorien, div.index span.Struktur-VerhÃ¤ltnis-Funktion, ul#kategorien li span.Struktur-VerhÃ¤ltnis-Funktion{
+    border-bottom: 3px solid #003399;
+}
+
+ul#kategorien li span.RealitÃ¤tskonzept.active, ul#kategorien li span.Struktur-VerhÃ¤ltnis-Funktion.active {
+    background-color: #ffffff;
+}
+
+.Wahrnehmungsform.active, div.index span.Wahrnehmungsform, li span.Wahrnehmungsform {
+    border-bottom: 3px solid #ff00ff;
+}
+.Wahrnehmungsmedium.active, div.index span.Wahrnehmungsmedium, li span.Wahrnehmungsmedium {
+    border-bottom: 3px solid #cc66cc;
+}
+button.Wirkung-Ergebnis.active.kategorien, span.Wirkung-Ergebnis.active.kategorien, div.index span.Wirkung-Ergebnis, ul#kategorien li span.Wirkung-Ergebnis {
+    border-bottom: 3px solid #990099;
+}
+
+span.kategorien {
+    position:relative;
+    cursor: text;
+    color: #000000;
+    background-color: transparent;
+}
+
+.active {
+    cursor: pointer;
+}
+
+span.themen.active:before {
+    content: "{"attr(title)": ";
+    color: #666666;
+    font-size: 0.85em;
+}
+
+span.themen.active:after {
+    content: "}";
+    color: #666666;
+    font-size: 0.85em;
+}
+
+p {
+    color: #000000;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 0.8em;
+}
+
+span.spaced {
+    letter-spacing:2pt
+}
+
+span.small-caps {
+    font-variant:small-caps;  
+}
+
+span.italic {
+    font-style:italic;
+}
+
+span.bold {
+    font-weight: bold;
+}
+span.underline {
+    text-decoration:underline;
+}
+span.superscript {
+    vertical-align:super; 
+    font-size: 0.85em;
+}
+
+a.endnote {
+    display: inline; 
+    font-size: 80%; 
+    position:relative; 
+    bottom: 0.5em;
+}
+
+span.n-fn {
+    font-size: 80%; 
+    vertical-align: super;
+}
+
+span.content-fn {
+     font-size: 0.9em; 
+     line-height: 1em;
+}
+
+img.figure {
+    width:70%;
+    display: block;
+}
+span.level2 {
+    background-image: none;
+}
+p.ZS {
+    padding-bottom: 1em; 
+    margin-left: 1em; 
+    margin-top: 0; 
+    font-family: 'Open Sans';
+    font-size: 0.9em;
+}
+
+p.SO {
+    padding-bottom: 0.5em; 
+    padding-top: 0; 
+    font-family: 'Open Sans'
+}
+
+
+/*OriginalseitenumbrÃ¼che ein-/ausblenden*/
+.seiten {
+    display: inline;
+    color: #999999;
+}
+
+.seiten_hl {
+    display: none;
+}
+
+
+
+/*Suche*/
+select {
+    font-size: 0.9em;
+    padding: 1px;
+}
+
+option {
+    font-size: 1em;
+}
+
+
+
+/*Multiple Select*/
+.multiselect {
+    width:248px;
+    height:4.2em;
+    border:solid 1px #c0c0c0;
+    overflow:auto;
+    padding-left: 2px;
+}
+
+.multiselect label {
+    display:block;
+    color: #000000;
+    font-size: 0.9em;
+    padding-left: 0.2em;
+}
+ 
+.multiselect-on {
+    color:#ffffff;
+    background-color:#000099;
+}
+
+/* fixed navigation */
+div#sticky {
+  font-size: 0.85em;
+  color: #999999;
+  width: 25em;
+  margin-left: 10px;
+  padding-left: 0;
+}
+
+div#sticky p {
+  color: #222222;
+}
+
+
+ul p.top {
+   color: #222222;
+   text-align: right;
+   font-size: 0.85em;
+}
+
+
+
+
+/*rewrite YAML*/
+
+/* search form (hlist.css) */
+	.ym-searchform {
+		padding-right: 0;
+	}
+	
+	
+	
+/*Index*/
+div.index {
+    margin-left: 0; 
+    background-color:  #ffffff; 
+    padding-left: 1.5em; 
+    padding-right: 1.5em;
+}
+
+div.index h5 {
+    font-size: 1.1em; 
+    font-weight: normal; 
+    margin-top: 2em;
+}
+
+div.index span.kat {
+    font-size: 1.1em; 
+    padding-top: 0.5em; 
+    font-weight: normal; 
+    display: block;
+}
+
+div.index span.thema {
+    font-size: 1.1em; 
+    padding-top: 0.5em;
+    font-weight: normal; 
+    display: block; 
+    border-bottom: 3px solid #ccffff;
+}
+
+div.index ul {
+    list-style:none;
+    margin-bottom: 2em; 
+    margin-left: 0;
+}
+
+div.index li.entry {
+    font-size: 0.9em; 
+    margin-left:2em; 
+    margin-top: 0; 
+    padding-top: 0; 
+    list-style-type:square; 
+    margin-bottom: 0.5em;
+}
+
+div.index li.entry span {
+    background-image: none;
+}
+
+li.biblEntry {
+    margin-bottom: 0.5em; 
+    list-style-image: url(/reko/img/iconList.gif);
+}
+
+li.biblEntry1 {
+    font-size: 0.9em; 
+    margin-left:2em; 
+    margin-top: 0; 
+    padding-top: 0; 
+    margin-bottom: 0.5em; 
+    list-style-image: url(/reko/img/iconList.gif);
+}
+
+li.katBiblEntry {
+    list-style-image: url(/reko/img/iconList.gif);
+}
+
+a.goToText {
+    padding-left: 0.5em;
+    background: none;
+}
+
+span.goToText {
+    padding-left: 0.5em;
+}
+
+span.goToText a:hover img {
+    background: none;
+}
+
+#topT01 {
+    border-bottom: 3px solid #dddddd;
+}
+
+#topT02 {
+    border-bottom: 3px solid #FFFF99;
+}
+
+#topT03 {
+    border-bottom: 3px solid #ccffcc;
+}
+
+#topT04 {
+    border-bottom: 3px solid #ccffff;
+}
+
+.slideUp {
+    background-image: url(http://gams.uni-graz.at/reko/img/arrow-up.gif);
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+.slideDown {
+    background-image: url(http://gams.uni-graz.at/reko/img/arrow-down.gif);
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+span.registerBibl {
+    font-style: italic;
+}
+
+
+
+/*Formular*/
+
+input.themen, input.kategorien {
+    float: left; 
+    margin-right: 3px; 
+    margin-top: 5px;
+}
+
+
+label.searchCat {
+    font-size: 1em; 
+    color: #474747; 
+    font-weight: normal;  
+    font-style:italic;
+}
+
+label.searchDate {
+    font-size: 0.9em; 
+    color: #000000; 
+    padding-right: 0.5em;
+}
+
+form.ym-form {
+    margin-top: 1em;
+}
+
+form.ym-form div.ym-fbox-button {
+    margin-left: -1em;
+    background: none; 
+    border-top: 0;
+    }
+
+button.ym-button.submit, button.ym-button.reset {
+    padding-top: 0; 
+    font-size: 0.9em; 
+    padding-bottom: 0; 
+    padding-right: 6px; 
+    padding-left: 6px;
+}
+
+select option {
+    font-size: 1em;
+}
+
+div.ym-fbox-text, div.ym-fbox-select, div.ym-fbox-check {
+    width: 100%;
+}
+
+
+div.ym-fbox-text input.ym-searchfield {
+    display: inline; 
+    color: #000000; 
+    font-size: 0.9em;
+    width: 200px;  
+} 
+
+div.ym-fbox-text span.help {
+     padding-left: 0.5em; 
+     display: inline;
+}
+
+div.ym-fbox-select select {
+    width: 250px
+    }
+
+               
+p.dimmed {
+    margin-top: 0;
+}
+
+form.show {
+    font-size: 0.9em; 
+    padding-top: 1em;
+}
+
+form.ym-form div.ym-fbox-text, form.ym-form div.ym-fbox-select, form.ym-form div.ym-fbox-check {
+    padding-left: 0;
+}  
+
+/*dialog*/
+.no-close .ui-dialog-titlebar-close {
+    display: none;
+}
+
+span.themen.active, span.kategorien.active {
+	cursor: pointer;
+}
+
+#multiLinkPopup {
+    display: none
+    }
+
+p.top img {
+    padding-right: 0.7em;
+}
+
+
+
+
+/*Random*/
+div.random {
+    display: none;
+}
+div.randomEntry {
+    border-bottom: 1px solid #dddddd;
+}
+
+div.randomEntry h4 {
+	    font-style:normal;
+	    color: #474747;
+	}
+	div.randomEntry h5 {
+	    margin-top: 0.3em;
+	    color: #474747;
+	    font-style: italic;
+	    font-size: 1em;
+	}
+	
+	div.randomEntry p {
+	    text-align:right;
+	    margin-top: 0;
+	    margin-bottom: 1em;
+	    
+	}
+
+
