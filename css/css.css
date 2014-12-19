@@ -968,3 +968,20 @@ div.randomEntry h4 {
 	}
 
 
+/* Lokale Ergänzungen für Rechnungsanzei */
+
+.footnote_number, .footnote_reference, .superscript, .sup, .super{ 
+    vertical-align: super;
+    font-size:60%;
+}
+
+.folio {
+    margin-top:10px;
+    margin-bottom:10px;
+    border-bottom-width:3px;
+    border-bottom-style:solid;
+}
+
+.Summe {
+    font-weight:bold;
+}
