@@ -78,6 +78,34 @@
                                 </xsl:for-each>
                             </ul>
                         </div>
+                        <div class="ym-gbox nwbox">
+                            <h3>Suchmöglichkeiten</h3>
+                            <ul>
+                            <li>Stichwortsuche:<br/>
+                                <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" method="get" name="SucheStichwort" onsubmit="addParams(this)">
+                                <input class="ym-serchfield" id="Stichwort" name="Stichwort" placeholder="Suche" type="search" />
+                                <input name="params" type="hidden" />
+                                <xsl:text />
+                                <input class="ym-searchbutton" type="submit" value="Suche" />
+                            </form>
+                                <br/> (schnell, Rechtstrunkierung mit * möglich, Umlaute werden wie Grundbuchstabe behandelt)</li>
+                                <li>Suche mit <a href="http://de.wikipedia.org/wiki/Regulärer_Ausdruck">regulären Ausdrücken</a>:<br/>
+                                    <form action="/archive/objects/query:srbas.regex/methods/sdef:Query/get" method="get" name="SucheRegex" onsubmit="addParams(this)">
+                                        <input class="ym-serchfield" id="Stichwort" name="Stichwort" placeholder="Suche" type="search" />
+                                        <input name="params" type="hidden" />
+                                        <xsl:text />
+                                        <input class="ym-searchbutton" type="submit" value="Suche" />
+                                    </form>
+                                    <br/>
+                                    (langsamer, dafür sind reguläre Ausdrücke möglich: z.B. "sta[dt].?schre?ib" findet "Stadtschreiber", "statschriber", "stattschreibers", "stadeschrib" etc.)</li>
+                                <li>Suche beschränken auf:<br/>
+                                    <ul>
+                                        <li>Zeitraum</li>
+                                        <li>Konto</li>
+                                        <li>Betrag</li>
+                                    </ul></li>
+                            </ul>
+                        </div>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:apply-templates />

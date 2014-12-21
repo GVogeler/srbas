@@ -47,10 +47,14 @@
                     
                     }); </script>
                 <script xmlns="" xmlns:sr="http://www.w3.org/2001/sw/DataAccess/rf1/result" type="text/javascript">
-                    function addParams() {
-                    document.Suche.params.value="$1|" + document.Suche.Stichwort.value ;
-                    document.Suche.Stichwort.setAttribute("disabled", "disabled");
-                    return true;
+                    <!-- ToDo: js: 
+                        * addParams um den Kontext des jeweiligen Formulars erweitern: funktioniert das so?
+                        * reguläre Ausdrücke um ^$1$ erweitern und tokenizen für "und/oder/nicht"-Suche 
+                    -->
+                    function addParams(form) {
+                        form.params.value="$1|" + form.Stichwort.value ;
+                        form.Stichwort.setAttribute("disabled", "disabled"); //brauche ich das? Bzw. kann ich das nach dem Abschicken wieder enablen?
+                        return true;
                     }
                 </script>
                 <xsl:text disable-output-escaping="yes">&lt;!--[if lte IE 7]&gt;</xsl:text>
@@ -111,8 +115,16 @@
                                     </xsl:if>
                                     <a href="/context:srbas?mode=browse">Browse</a>
                                 </li>
+                                <li>
+                                    <xsl:if test="$cid='context:srbas-search' or $mode='search'">
+                                        <xsl:attribute name="class">
+                                            <xsl:text>active</xsl:text>
+                                        </xsl:attribute>
+                                    </xsl:if>
+                                    <a href="/context:srbas?mode=browse">Suche</a>
+                                </li>
                             </ul>
-                            <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" class="ym-searchform" method="get" name="Suche" onsubmit="addParams()">
+                            <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" class="ym-searchform" method="get" name="Suche" onsubmit="addParams(this)">
                                 <input class="ym-serchfield" id="Stichwort" name="Stichwort" placeholder="Suche" type="search" />
                                 <input name="params" type="hidden" />
                                 <xsl:text />
