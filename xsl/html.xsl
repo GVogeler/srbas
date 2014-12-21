@@ -23,7 +23,6 @@
                 </title>
                 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">/* test */</script>
-                <script type="text/javascript" src="http://gams.uni-graz.at/rem/lib/jquery-1.7.1.min.js">/* test */</script>
                 <!-- Das JavaScript, das die Buchungen summiert und in div@id=calculations schreibt: 
                 http://gams.uni-graz.at/rem/
                 -->

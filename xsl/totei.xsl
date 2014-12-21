@@ -36,7 +36,14 @@
     <xsl:template match="comment()|text()|@*" priority="-2">
         <xsl:copy/>
     </xsl:template>
-
+    <xd:doc>
+        <xd:desc>Ein paar Attribute will ich nicht kopieren, weil sie aus Defaultangaben der TEI stammen.</xd:desc>
+    </xd:doc>
+    <xsl:template match="@instant|@status|@part|@scope" priority="-1"/>
+    <xd:doc>
+        <xd:desc>Außer @part, @instant, @status, ... </xd:desc>
+    </xd:doc>
+    <xsl:template match="@part|@instant|@status|@scope|@uniform|@sample" priority="-1"/>
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
@@ -80,6 +87,7 @@
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_entry</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </p>
     </xsl:template>
@@ -107,6 +115,7 @@
                         </xsl:call-template>
                         <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                         </xsl:attribute>
+                        <xsl:apply-templates select="@*"/>
                         <xsl:apply-templates/>
                     </xsl:element>
                 </div>
@@ -118,6 +127,7 @@
                     </xsl:call-template>
                     <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                     </xsl:attribute>
+                    <xsl:apply-templates select="@*"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:otherwise>
@@ -136,14 +146,13 @@
                 <xsl:otherwise>seg</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:text> </xsl:text>
-        <xsl:element name="{$element-name}">
+        <xsl:text> </xsl:text><xsl:element name="{$element-name}">
             <xsl:call-template name="id">
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_amount</xsl:attribute>
-            <xsl:apply-templates/>
-        </xsl:element>
+            <xsl:apply-templates select="@*"/><xsl:apply-templates/>
+        </xsl:element><xsl:text> </xsl:text>
     </xsl:template>
 
     <xd:doc>
@@ -153,6 +162,7 @@
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </measure>
     </xsl:template>
@@ -166,6 +176,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">lb</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> lb</measure>
     </xsl:template>
 
@@ -178,6 +189,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">ß-w</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> ß</measure>
     </xsl:template>
 
@@ -190,6 +202,7 @@
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
             <xsl:attribute name="unit">d</xsl:attribute>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/> d</measure>
     </xsl:template>
 
@@ -204,7 +217,7 @@
     <xsl:template match="r:sup|r:exp">
         <seg rend="super">
             <xsl:apply-templates/>
-        </seg>
+        </seg><xsl:text> </xsl:text>
     </xsl:template>
 
 
@@ -289,6 +302,7 @@
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:attribute name="spanTo" select="concat('#',generate-id(./*[last()]))"/>
+            <xsl:apply-templates select="@*"/>
         </metamark>
         <xsl:apply-templates/>
     </xsl:template>
@@ -309,7 +323,19 @@
             </xsl:attribute>
         </xsl:if>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>Vergibt eine PID, wenn es noch keine gibt</xd:desc>
+    </xd:doc>
+    <xsl:template match="/t:TEI/t:teiHeader[1]/t:fileDesc[1]/t:publicationStmt[1]">
+        <xsl:copy>
+            <xsl:apply-templates/>
+            <xsl:if test="not(t:idno[@type='PID'])">
+                <idno type="PID">o:srbas.<xsl:value-of select="../t:sourceDesc/t:msDesc/t:msContents/t:p/t:origDate/substring-before(@from,'-')"></xsl:value-of></idno>
+            </xsl:if>
+        </xsl:copy>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Expandiert XIncludes</xd:desc>
     </xd:doc>

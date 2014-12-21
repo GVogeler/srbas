@@ -379,7 +379,8 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>        
-    <xsl:template match="*[(./@corresp and not(substring-before(@ana,'_') = '#bk')) or ./@key]">
+    <xsl:template match="*[(./@corresp and not(substring-before(@ana,'_') = '#bk')) or ./@key]" priority="-1">
+        <!-- ToDo: @corresp ist hier viel zu allgemein, um als einziges Instrument zur Fußnotenreferenz verwendet zu werden -->
         <xsl:variable name="element" select="."/>
         <!--hochgestellt und kursiv-->
         <xsl:variable name="ref">
