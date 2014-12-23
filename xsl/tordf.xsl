@@ -16,10 +16,12 @@
     <xsl:include
         href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
     <xd:doc><xd:desc><xd:p>Konvertiert ein TEI-Dokument mit Rechnungsmarkup (matches(@ana,'#bk_|#gl_') in RDF im Kontext des Editionsprojekts 'Basler Jahrrechnungen im 16. Jahrhundert'</xd:p>
-    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-11-01</xd:p>
-    <xd:ul>
-        <xd:li></xd:li>
-    </xd:ul></xd:desc></xd:doc>
+    <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-12-23</xd:p>
+        <xd:ul>
+            <xd:li>xsl:text für Leerzeichen braucht es nicht mehr, weil es schon im TEI steht</xd:li>
+        </xd:ul>
+    </xd:desc>
+    </xd:doc>
     <xsl:output encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
     
     <xd:doc>
@@ -312,9 +314,9 @@
             </bk:inhalt>
         </rdf:Description>
     </xsl:template>
-    <xsl:template match="tei:measure/text()" mode="text">
-        <xsl:text> </xsl:text><xsl:value-of select="."/><xsl:text> </xsl:text>
-    </xsl:template>
+<!--    <xsl:template match="tei:measure/text()" mode="text">
+        <xsl:value-of select="."/>
+    </xsl:template>-->
     <xsl:template match="tei:measure[./@type='currency']|tei:*[matches(@ana,'#(bk|gl)_amount')]" priority="-1">
         <!-- ToDo: die Konstruktion mit measure[@type='currency'] sollte in einem allgemeinen Stylesheet raus, weil sie zu unpräzise ist: Preisangaben z.B. -->
         <xsl:element name="bk:amount">
