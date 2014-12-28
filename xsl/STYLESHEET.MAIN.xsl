@@ -124,8 +124,8 @@
                                     <a href="/context:srbas?mode=browse">Suche</a>
                                 </li>
                             </ul>
-                            <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" class="ym-searchform" method="get" name="Suche" onsubmit="addParams(this)">
-                                <input class="ym-serchfield" id="Stichwort" name="Stichwort" placeholder="Suche" type="search" />
+                            <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" class="ym-searchform" method="get" name="Suche" onsubmit="addParams(document.Suche)">
+                                <input class="ym-serchfield" id="Stichwort" name="Suche" placeholder="Suche" type="search" />
                                 <input name="params" type="hidden" />
                                 <xsl:text />
                                 <input class="ym-searchbutton" type="submit" value="Suche" />
