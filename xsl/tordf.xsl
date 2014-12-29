@@ -18,7 +18,7 @@
     <xd:doc><xd:desc><xd:p>Konvertiert ein TEI-Dokument mit Rechnungsmarkup (matches(@ana,'#bk_|#gl_') in RDF im Kontext des Editionsprojekts 'Basler Jahrrechnungen im 16. Jahrhundert'</xd:p>
     <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-12-23</xd:p>
         <xd:ul>
-            <xd:li>xsl:text für Leerzeichen braucht es nicht mehr, weil es schon im TEI steht</xd:li>
+            <xd:li>2014-12-23: xsl:text für Leerzeichen braucht es nicht mehr, weil es schon im TEI steht</xd:li>
         </xd:ul>
     </xd:desc>
     </xd:doc>
@@ -65,11 +65,15 @@
     
     <xd:doc>
         <xd:desc>Die Rechnung hat folgende Eigenschaften:
-        <xd:ul>
-            <xd:li>die Referenz auf Mulgara-ID</xd:li>
-            <xd:li>ein Datum</xd:li>
-        
-        </xd:ul></xd:desc>
+            <xd:ul>
+                <xd:li>die Referenz auf Mulgara-ID (g2o:sameAs)</xd:li>
+                <xd:li>ein Datum</xd:li>
+                <xd:li>eine Signatur (tei:msIdentifier)</xd:li>
+                <xd:li>eine Liste der verwendeten Konten mit Summen (wobei die erläuternden Angaben zu den Konten ausgelagert sind (ToDo))</xd:li>
+                <xd:li>die eigentlichen Buchungen</xd:li>
+                <xd:li>die Seiten</xd:li>
+            </xd:ul>
+        </xd:desc>
     </xd:doc>
     <xsl:template match="/">
         <rdf:RDF>
@@ -96,13 +100,20 @@
             </rdf:Description>
             <xsl:apply-templates
                 select="//tei:taxonomy[matches(@ana,'#bk_account') or matches(@ana,'#gl_account')]"/>
-            <xsl:apply-templates select="//tei:*[@xml:id='srbas-schlagwoerter']"/>
+            <xsl:apply-templates select="//tei:*[@xml:id='srbas-schlagwoerter']"/><!-- FixMe: Braucht es das wirklich? Das sollte doch eigentlich extern passieren -->
             <xsl:apply-templates
                 select="//tei:*[matches(@ana,'#bk_entry') or matches(@ana,'#gl_entryDetail') or matches(@ana, '#bk_total')]"
             />
+            <xsl:apply-templates select="//tei:pb"/>
         </rdf:RDF>
     </xsl:template>
+    <xd:doc>
+        <xd:desc>Die Kontenliste mit den jeweiligen Summen</xd:desc>
+    </xd:doc>
     <xsl:template match="//tei:taxonomy[@ana='#bk_account']">
+        <!-- ToDo: 
+            Die Existenz von Toplevel und die accountPaths müßte man generalisiert auslagern, d.h. nur beim Ingest von konten.xml ausführen, also einen Abarbeitungspfad legen, der von besonderen Eigenschaften von konten.xml abhängt, z.B. der PID 
+        Dort müßten dann auch die skos:prefLabel zu den Konten ausgelesen werden, die in die Anzeigen einzugehen haben -->
         <rdf:Description rdf:about="{concat($xmlBaseAccounts,'#toplevel')}">
             <bk:accountPath>/</bk:accountPath>
         </rdf:Description>
@@ -164,6 +175,9 @@
         </rdf:Description>
         <xsl:apply-templates mode="accounts" select="tei:category"/>
     </xsl:template>
+    <xd:doc>
+        <xd:desc><xd:b>Die Kontenliste:</xd:b></xd:desc>
+    </xd:doc>
     <xsl:template match="tei:category" mode="accounts">
         <xsl:param name="accountPath"/>
         <rdf:Description rdf:about="{concat($xmlBaseAccounts,'#',@xml:id)}">
@@ -272,7 +286,9 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    <xd:doc>
+        <xd:desc>Alle mit @ana auf die Buchhaltungsontologie verweisenden Elmenete werden im folgenden verarbeitet</xd:desc>
+    </xd:doc>
     <xsl:template match="*[substring-before(@ana,'_')='#bk']|*[substring-before(@ana,'_')='#gl']"
         priority="-2">
         <xsl:variable name="id">
@@ -312,11 +328,30 @@
             <bk:inhalt>
                 <xsl:apply-templates mode="text"/>
             </bk:inhalt>
+            <!-- ToDo: "appears-on" noch in ein CIDOC-taugliches Vokabular übersetzen -->
+            <g2o:appears-on rdf:resource="{concat($base-uri,'#',preceding::pb[1]/@xml:id)}"/>
         </rdf:Description>
     </xsl:template>
-<!--    <xsl:template match="tei:measure/text()" mode="text">
-        <xsl:value-of select="."/>
+    <xd:doc>
+        <xd:desc>Die <xd:b>Seiten</xd:b> sind auch Objekte alleine wegen der Bildreferenz</xd:desc>
+    </xd:doc>
+    <xsl:template match="tei:pb">
+        <rdf:Description>
+            <xsl:attribute name="rdf:about" select="concat($base-uri,'#',@xml:id)"/>
+            <g2o:folio><xsl:value-of select="count(preceding::tei:pb)"/></g2o:folio>
+            <!-- Hier käme dann die Referenz auf die URI des Bildes hinzu:
+            g2o:is-depicted-by-->
+        </rdf:Description>
+    </xsl:template>
+    <!--    <xd:doc>
+        <xd:desc>Betragsangaben im Text müssen immer ein Lerzeichen davor und danach haben</xd:desc>
+    </xd:doc>
+    <xsl:template match="tei:measure/text()" mode="text">
+        <xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="."/><xsl:text xml:space="preserve"> </xsl:text>
     </xsl:template>-->
+    <xd:doc>
+        <xd:desc>Betragsangaben müssen noch ein paar Informationen aus der Umgebung ziehen</xd:desc>
+    </xd:doc>
     <xsl:template match="tei:measure[./@type='currency']|tei:*[matches(@ana,'#(bk|gl)_amount')]" priority="-1">
         <!-- ToDo: die Konstruktion mit measure[@type='currency'] sollte in einem allgemeinen Stylesheet raus, weil sie zu unpräzise ist: Preisangaben z.B. -->
         <xsl:element name="bk:amount">
@@ -346,6 +381,9 @@
             </xsl:element>
         </xsl:element>
     </xsl:template>
+    <xd:doc>
+        <xd:desc>Konteninferenz</xd:desc>
+    </xd:doc>
     <xsl:template name="account">
         <xsl:param name="accountID"/>
         <xsl:param name="position"/>
@@ -360,5 +398,8 @@
             </xsl:if>
         </xsl:if>
     </xsl:template>
+    <xd:doc>
+        <xd:desc>Der Rest wird nicht ins RDF übernommen</xd:desc>
+    </xd:doc>
     <xsl:template match="*|@*" priority="-3"/>
 </xsl:stylesheet>
