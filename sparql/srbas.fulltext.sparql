@@ -14,23 +14,23 @@ SELECT DISTINCT ?jahr ?von ?entry ?betrag ?text ?o ?signofamount ?konto ?pfad ("
 WHERE {
     SERVICE <http://gams.uni-graz.at/sesame/sparqlendpoint>
 	{
-        ?entry bk:inhalt ?text;
+       ?entry bk:inhalt ?text;
 	       g2o:partOf ?o ;
 	       bk:amount ?a .
-        ?text bds:search "$1" ;
-              bds:matchAllTerms "true" .
-	    ?a bk:num ?betrag ;
+	   ?a bk:num ?betrag ;
            bk:as ?signofamount .
-		?o dc:date ?jahr ;
+       ?o dc:date ?jahr ;
            srbas:from ?von ;
            g2o:sameAs ?mo .
+       { ?text bds:search "$1" ;
+           bds:matchAllTerms "true" . }
        OPTIONAL {
            ?entry bk:mainAccount ?konto .
            ?konto bk:accountPath ?pfad .
        }
 	}
-     SERVICE <http://gams.uni-graz.at/mulgara/sparqlendpoint> {
+    SERVICE SILENT <http://gams.uni-graz.at/mulgara/sparqlendpoint> {
        ?mo  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
-       }   
+    }
 }
 ORDER BY ?jahr ?von ?o ?pfad ?entry
