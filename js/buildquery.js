@@ -43,7 +43,7 @@ function addParams(me) {
 			\ => %5C ??? Wie wird das durch die Verarbeitungskette gereicht?
 			' und " maskieren?
 			*/
-			param2 += "FILTER(" ;
+			param2 += " FILTER(" ;
 			for(i = 0; i < Stichwoerter.length; i++){
 				param2 +='regex(?text,"'+ Stichwoerter[i] +'","i")';
 				if(i > 0) {
@@ -61,7 +61,7 @@ function addParams(me) {
 		*/
 	   if(me.jahrVor.value != '' || me.jahrNach.value != '') {
 	   	   // FILTER(?jahr <= .... && ?jahr >= ...) # Zeitliche Einschränkung
-	   	   param2 += 'FILTER(' ;
+	   	   param2 += ' FILTER(' ;
 	   	   if(me.jahrVor.value !='') {
 	   	   	   param2 += '?jahr <= '+ me.jahrVor.value ;
 	   	   }
@@ -83,7 +83,8 @@ function addParams(me) {
 	   	   // ??? Liste von Konten
 	   }
 	   if(me.betrag.value != '') {
-	   	   param2 += 'FILTER(?betrag ' + me.betragsoperator.value + ' ' + me.betrag + ')'; // # Währungsumrechnungen mit berückichtigen? 
+	   	   /* FixMe: Betrag mit auf negative und positive Werte neutralisieren! */
+	   	   param2 += ' FILTER(?betrag ' + me.betragsoperator.value + ' ' + me.betrag + ')'; // # Währungsumrechnungen mit berückichtigen? 
 	   	   // FixMe: Sicherstellen, daß betrag eine Zahl ist
 	   	   //ToDo: betragsoperatoren wie "zwischen" und "ca" ( > x*0.95 && < )x*1.05 auswerten
 	   }

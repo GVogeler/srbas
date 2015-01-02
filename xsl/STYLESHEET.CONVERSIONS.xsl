@@ -135,6 +135,9 @@
       <xsl:when test="ends-with($r2,'XC')">
         <xsl:sequence select="90 + bk:roman2int(substring($r2,1,string-length($r2)-2))"></xsl:sequence>
       </xsl:when>
+      <xsl:when test="ends-with($r2,'XL')">
+        <xsl:sequence select="40 + bk:roman2int(substring($r2,1,string-length($r2)-2))" />
+      </xsl:when>
       <xsl:when test="ends-with($r2,'L')">
         <xsl:sequence select="50 + bk:roman2int(substring($r2,1,string-length($r2)-1))"></xsl:sequence>
       </xsl:when>
