@@ -79,6 +79,18 @@
                             </ul>
                         </div>
                         <div class="ym-gbox nwbox">
+                        <!-- ToDo: auf query:srbas.search generalisieren:
+                        * einbauen von js/builbquery.js
+                        * Suchfelder:
+                        	input["Stichwort"]
+							input["Suchart"] ('regex' oder 'fulltext')
+							?? verknüpfung der Suchausdrücke: alle "und", alle "oder", individuell?
+							input["jahrVor"], input["jahrNach"]
+							input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
+							input["betrag"], input["betragsoperator"]
+							
+							input["params"].hidden
+							-->
                             <h3>Suchmöglichkeiten</h3>
                             <ul>
                             <li>Stichwortsuche:<br/>
@@ -100,9 +112,14 @@
                                     (langsamer, dafür sind reguläre Ausdrücke möglich: z.B. "sta[dt].?schre?ib" findet "Stadtschreiber", "statschriber", "stattschreibers", "stadeschrib" etc.)</li>
                                 <li>Suche beschränken auf:<br/>
                                     <ul>
-                                        <li>Zeitraum</li>
-                                        <li>Konto</li>
-                                        <li>Betrag</li>
+                                    <!-- 
+									input["jahrVor"], input["jahrNach"]
+									input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
+									input["betrag"], input["betragsoperator"]
+									-->
+                                        <li>Zeitraum: <input type="text" name="jahrVor" label="vor" /> <input type="text" name="jahrNach" label="nach"/></li>
+                                        <li>Konto: <selecet name="konto"><!-- option-Liste aus konten.xml = srbas.konten ? auslesen </selecet></li>
+                                        <li>Betrag: <select name="betragsoperator"><option value="="/><option value="&gt;="/><option value="&lt;="/><option value="&gt;"/><option value="&lt;"/><!-- <option value="zwischen">zwischen</option><option value="ca">circa</option> --></select> <input type="text" name="betrag" /> </li>
                                     </ul></li>
                             </ul>
                         </div>
