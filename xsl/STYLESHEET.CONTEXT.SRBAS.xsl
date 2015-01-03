@@ -117,8 +117,9 @@
 									input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
 									input["betrag"], input["betragsoperator"]
 									-->
-                                        <li>Zeitraum: <input type="text" name="jahrVor" label="vor" /> <input type="text" name="jahrNach" label="nach"/></li>
-                                        <li>Konto: <selecet name="konto"><!-- option-Liste aus konten.xml = srbas.konten ? auslesen </selecet></li>
+                                        <li>Zeitraum: nach <input type="text" name="jahrNach"/> vor <input type="text" name="jahrVor"/></li>
+                                        <li>Konto: <select name="konto">
+                                        <option value="&lt;http://gams.uni-graz.at/rem/%23toplevel&gt;">Alle Konten</option><!-- option-Liste aus konten.xml = srbas.konten ? auslesen--> </select></li>
                                         <li>Betrag: <select name="betragsoperator"><option value="="/><option value="&gt;="/><option value="&lt;="/><option value="&gt;"/><option value="&lt;"/><!-- <option value="zwischen">zwischen</option><option value="ca">circa</option> --></select> <input type="text" name="betrag" /> </li>
                                     </ul></li>
                             </ul>

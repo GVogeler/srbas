@@ -27,15 +27,15 @@ input["params"].hidden
 
        
 */
-function addParams(me) {
+function addParamsExt(me) {
 	/* me ist das aktuelle Formular, da es auf einer Seite mehrere Formulare geben kann */
-	
 		/* Es muß dann die Verarbeitung der $2-Parameter folgen */
 		var Stichwoerter = searchTerms(me.Stichwort.value) ; /* Gibt einen Array aus Stichwörtern und Operatoren zurück */
+		//alert(Stichwoerter['Stichwoerter'][0]);
 		/* Hier aus den Stichwörtern und Operatoren je nach Suchart einen einschlägigen Suchstring bilden: */
 		var param2 = new String() ;
 		if(me.Suchart.value == 'fulltext') { // FixMe: Das gilt nur wenn es nicht unterschiedliche Operatoren gibt, sonst muß ich gruppieren ...
-			param2 += "?text bds:search " + '"' + me.Stichwort.value + '" ;"';
+			param2 += "?text bds:search " + '"' + me.Stichwort.value + '" ;';
 			param2 += ' bds:matchAllTerms "true" .'  ; //FixMe: Hier einen Oder-Parameter als "false" übernehmen 
 		}
 		else if(me.Suchart.value == 'regex') {
@@ -44,11 +44,11 @@ function addParams(me) {
 			' und " maskieren?
 			*/
 			param2 += " FILTER(" ;
-			for(i = 0; i < Stichwoerter.length; i++){
-				param2 +='regex(?text,"'+ Stichwoerter[i] +'","i")';
+			for(i = 0; i < Stichwoerter['Stichwoerter'].length; i++){
 				if(i > 0) {
-					params +=' && '; //FixMe: Das muß ggf. den Operatoren angepaßt werden
+					param2 +=' && '; //FixMe: Das muß ggf. den Operatoren angepaßt werden
 				}
+				param2 +='regex(?text,"'+ Stichwoerter['Stichwoerter'][i] +'","i")';
 			}
 			param2 +=")" ;
 		}
@@ -78,26 +78,29 @@ function addParams(me) {
 	   	   }
 	   	   param2 +=')';
 	   }
-	   if(me.kontoNach.value != '') {
+	   if(me.konto.value != '') {
 	   	   param2 +=' ?konto bk:account ' + me.konto.value + ' . ' //  # Einschränkung auf Konto (incl. Unterkonten)
 	   	   // ??? Liste von Konten
 	   }
 	   if(me.betrag.value != '') {
 	   	   /* FixMe: Betrag mit auf negative und positive Werte neutralisieren! */
-	   	   param2 += ' FILTER(?betrag ' + me.betragsoperator.value + ' ' + me.betrag + ')'; // # Währungsumrechnungen mit berückichtigen? 
+	   	   param2 += ' FILTER(?betrag ' + me.betragsoperator.value + ' ' + me.betrag.value + ')'; // # Währungsumrechnungen mit berückichtigen? 
 	   	   // FixMe: Sicherstellen, daß betrag eine Zahl ist
 	   	   //ToDo: betragsoperatoren wie "zwischen" und "ca" ( > x*0.95 && < )x*1.05 auswerten
 	   }
 		
 		
 		me.params.value="$1|" + me.Stichwort.value + ";$2|" + param2 ;
-		alert(me.params.value) ; //Debug
+		alert("http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?" + me.params.value) ; //Debug
 		me.Stichwort.setAttribute("disabled", "disabled");
 		return true;
 	
 }
+
 /* Ein Objekt mit den ganzen Funktionen? */
+
 function searchTerms(stichwort) {
+	// alert("Stichwort:" + stichwort);
 	/* gibt einen Array der Stichwörter und der Operatoren zurück */
 	var result = new Array() ;
 	/* Die Stichwoerter: */
@@ -105,8 +108,9 @@ function searchTerms(stichwort) {
 	/* und noch die Operatoren extrahieren, d.h. einleitende Zeichen, wenn sie + = und, - = nicht oder | = oder sind: */
 	var operators = new Array() ;
 	for(i = 0; i < Stichwoerter.length; i++){
-		if(Stichwoerter.chartAt(0).search("[+-|]") {
-			operators[i] = Stichwoerter.chartAt(0) ;
+		//alert("|"+Stichwoerter[i]+"|");
+		if(Stichwoerter[i].charAt(0).search("[+-|]")) {
+			operators[i] = Stichwoerter[i].charAt(0) ;
 			Stichwoerter[i] = Stichwoerter[i].susbstr(1) ; 
 		}
 		else {
@@ -115,5 +119,6 @@ function searchTerms(stichwort) {
 	}
 	result['Stichwoerter'] = Stichwoerter ;
 	result['operators'] = operators ;
+	// alert(result['operators'][0]);
 	return result ;
 }
