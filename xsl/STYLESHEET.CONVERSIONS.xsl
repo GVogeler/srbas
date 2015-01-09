@@ -169,7 +169,7 @@
         <xsl:sequence select="10 + bk:roman2int(substring($r2,1,string-length($r2)-1))"></xsl:sequence>
       </xsl:when>
       <xsl:when test="ends-with($r2,'̶')">
-        <xsl:sequence select="0.5 + bk:roman2int(substring($r2,1,string-length($r2)-1))"></xsl:sequence>
+        <xsl:sequence select="-0.5 + bk:roman2int(substring($r2,1,string-length($r2)-1))"></xsl:sequence>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="0"></xsl:sequence>
