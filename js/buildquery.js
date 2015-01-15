@@ -46,6 +46,8 @@ http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/ge
 Maskierung von Suchanfragen
 + => %2b
 
+Problem mit Regex-Maskierung: SESAME erwartet \\ ?
+
 */
 function addParamsExt(me) {
 	/* me ist das aktuelle Formular, da es auf einer Seite mehrere Formulare geben kann */
