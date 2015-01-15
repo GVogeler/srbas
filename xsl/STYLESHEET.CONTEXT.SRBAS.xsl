@@ -78,6 +78,52 @@
                                 </xsl:for-each>
                             </ul>
                         </div>
+                        <div class="ym-gbox nwbox">
+                        <!-- ToDo: auf query:srbas.search generalisieren:
+                        * einbauen von js/builbquery.js
+                        * Suchfelder:
+                        	input["Stichwort"]
+							input["Suchart"] ('regex' oder 'fulltext')
+							?? verknüpfung der Suchausdrücke: alle "und", alle "oder", individuell?
+							input["jahrVor"], input["jahrNach"]
+							input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
+							input["betrag"], input["betragsoperator"]
+							
+							input["params"].hidden
+							-->
+                            <h3>Suchmöglichkeiten</h3>
+                            <ul>
+                            <li>Stichwortsuche:<br/>
+                                <form action="/archive/objects/query:srbas.fulltext/methods/sdef:Query/get" method="get" name="SucheStichwort" onsubmit="addParams(document.SucheStichwort)">
+                                <input class="ym-serchfield" id="Stichwort" name="SucheStichwort" placeholder="Suche" type="search" />
+                                <input name="params" type="hidden" />
+                                <xsl:text />
+                                <input class="ym-searchbutton" type="submit" value="Suche" />
+                            </form>
+                                <br/> (schnell, Rechtstrunkierung mit * möglich, Umlaute werden wie Grundbuchstabe behandelt)</li>
+                                <li>Suche mit <a href="http://de.wikipedia.org/wiki/Regulärer_Ausdruck">regulären Ausdrücken</a>:<br/>
+                                    <form action="/archive/objects/query:srbas.regex/methods/sdef:Query/get" method="get" name="SucheRegex" onsubmit="addParams(document.SucheRegex)">
+                                        <input class="ym-serchfield" id="Stichwort" name="Stichwort" placeholder="Suche" type="search" />
+                                        <input name="params" type="hidden" />
+                                        <xsl:text />
+                                        <input class="ym-searchbutton" type="submit" value="Suche" />
+                                    </form>
+                                    <br/>
+                                    (langsamer, dafür sind reguläre Ausdrücke möglich: z.B. "sta[dt].?schre?ib" findet "Stadtschreiber", "statschriber", "stattschreibers", "stadeschrib" etc.)</li>
+                                <li>Suche beschränken auf:<br/>
+                                    <ul>
+                                    <!-- 
+									input["jahrVor"], input["jahrNach"]
+									input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
+									input["betrag"], input["betragsoperator"]
+									-->
+                                        <li>Zeitraum: nach <input type="text" name="jahrNach"/> vor <input type="text" name="jahrVor"/></li>
+                                        <li>Konto: <select name="konto">
+                                        <option value="&lt;http://gams.uni-graz.at/rem/%23toplevel&gt;">Alle Konten</option><!-- option-Liste aus konten.xml = srbas.konten ? auslesen--> </select></li>
+                                        <li>Betrag: <select name="betragsoperator"><option value="="/><option value="&gt;="/><option value="&lt;="/><option value="&gt;"/><option value="&lt;"/><!-- <option value="zwischen">zwischen</option><option value="ca">circa</option> --></select> <input type="text" name="betrag" /> </li>
+                                    </ul></li>
+                            </ul>
+                        </div>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:apply-templates />

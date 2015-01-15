@@ -19,8 +19,11 @@
                 das in gams.uni-graz.at/rem verarbeitet wird.</xd:p>
             <xd:p>Verwendet die Betragsumrechnungen auf Basis eines TEI-Stylesheets</xd:p>
             <xd:p>Expandiert xi:imports</xd:p>
-            <xd:p>Version 2014-10-21</xd:p>
+            <xd:p>Version 2014-12-23</xd:p>
             <xd:p>Georg Vogeler georg.vogeler@uni-graz.at</xd:p>
+            <xd:ul>
+                <xd:li>2014-12-23: xsl:text mit Leerzeichen um xml:space="preserve" erweitert</xd:li>
+            </xd:ul>
         </xd:desc>
     </xd:doc>
     <xsl:output exclude-result-prefixes="#all" indent="yes"/>
@@ -146,13 +149,13 @@
                 <xsl:otherwise>seg</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:text> </xsl:text><xsl:element name="{$element-name}">
+        <xsl:text xml:space="preserve"> </xsl:text><xsl:element name="{$element-name}">
             <xsl:call-template name="id">
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_amount</xsl:attribute>
             <xsl:apply-templates select="@*"/><xsl:apply-templates/>
-        </xsl:element><xsl:text> </xsl:text>
+        </xsl:element><xsl:text xml:space="preserve"> </xsl:text>
     </xsl:template>
 
     <xd:doc>
@@ -171,7 +174,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfundangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:lbd">
-        <xsl:text> </xsl:text>
+        <xsl:text xml:space="preserve"> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -184,7 +187,7 @@
         <xd:desc>Umwandlung von allgemeinen Schillingangaben (kurzer Schilling)</xd:desc>
     </xd:doc>
     <xsl:template match="r:ß|r:sh">
-        <xsl:text> </xsl:text>
+        <xsl:text xml:space="preserve"> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -197,7 +200,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfennigangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:d">
-        <xsl:text> </xsl:text>
+        <xsl:text xml:space="preserve"> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -217,7 +220,7 @@
     <xsl:template match="r:sup|r:exp">
         <seg rend="super">
             <xsl:apply-templates/>
-        </seg><xsl:text> </xsl:text>
+        </seg><xsl:text xml:space="preserve"> </xsl:text>
     </xsl:template>
 
 
@@ -281,7 +284,7 @@
     <xsl:template match="r:klammer">
         <metamark>
             <xsl:attribute name="rend">Klammer<xsl:if test="@rend">
-                    <xsl:text/>
+                    <xsl:text xml:space="preserve"> </xsl:text>
                     <xsl:value-of select="@rend"/>
                 </xsl:if>
             </xsl:attribute>
@@ -317,7 +320,7 @@
             <xsl:attribute name="xml:id">
                 <xsl:if test="name($element)='div' and $element/head/text()">
                     <xsl:value-of select="$element/head/text()"/>
-                    <xsl:text>_</xsl:text>
+                    <xsl:text xml:space="preserve">_</xsl:text>
                 </xsl:if>
                 <xsl:value-of select="generate-id(.)"/>
             </xsl:attribute>

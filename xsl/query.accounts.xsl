@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:sr="http://www.w3.org/2001/sw/DataAccess/rf1/result" xmlns:xs="http://www.w3.org/2001/XMLSchema"   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" exclude-result-prefixes="xs xd" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:sr="http://www.w3.org/2001/sw/DataAccess/rf1/result" xmlns:xs="http://www.w3.org/2001/XMLSchema"   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" exclude-result-prefixes="xs xd" version="2.0">
     <xsl:import href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.MAIN/content" />
     <xsl:decimal-format decimal-separator="," grouping-separator="." name="european" />
     <xsl:param name="mode" />
@@ -21,7 +22,8 @@
     
     <xd:doc>
         <xd:desc>Ausgabe der Kontenabgrage
-        Georg Vogeler, Maximilian Müller, Version 2014-12-18        
+        Georg Vogeler, Maximilian Müller, Version 2014-12-18
+ToDo: Anzeige von kontoname bzw. subkontoname statt der URI        
         </xd:desc>
     </xd:doc>
     <xsl:template name="content">
@@ -41,7 +43,7 @@
             <div xmlns:s="http://www.w3.org/2001/sw/DataAccess/rf1/result" class="ym-wrapper">
                 <div class="ym-wbox">
                     <div class="ym-gbox nwbox">
-            <h2>Zeitreihe Kontensummen zu <xsl:value-of select="$gesuchteskonto" /></h2>
+            <h2>Zeitreihe Kontensummen zu <xsl:value-of select="//sr:result[sr:konto/@uri=$gesuchteskonto][1]/sr:kontenname" /></h2>
             <p>Alle Beträge in Pfennig.</p>
             <p>
                 <a href="/archive/objects/query:srbas.accounts/methods/sdef:Query/get?params=$1|&lt;http://gams.uni-graz.at/rem/%23toplevel&gt;">Top Level</a>
