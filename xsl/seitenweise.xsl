@@ -8,32 +8,15 @@
         Georg Vogeler georg.vogeler@uni-graz.at, 2015-01-18
         </xd:desc>
     </xd:doc>
-    <xsl:template match="/">
-        <xsl:variable name="pbs" select="//t:body//t:pb"/>
-        <xsl:variable name="pb-a" select="$pbs[1]"/> <!-- Ab hier soll ausgegeben werden -->
-        <!-- Seitenfragment: -->
-        <xsl:variable name="seite" select="rem:fragment($pb-a, $pb-a/following::t:pb[1], $pb-a/ancestor::node()[. = $pb-a/following::t:pb[1]/ancestor::node()][1])"/>
-        <xsl:variable name="seite-t">
-            <xsl:call-template name="fragment">
-                <xsl:with-param name="from" select="$pb-a"/>
-                <xsl:with-param name="to" select="$pb-a/following::t:pb[1]"/>
-                <xsl:with-param name="where" select="$pb-a/ancestor::node()[. = $pb-a/following::t:pb[1]/ancestor::node()][1]"/><!-- Kleinster gemeinsamer Vorfahrenknoten aka "Stammvater" -->
-            </xsl:call-template>
-        </xsl:variable>
-        <html>
-            <head/>
-            <body>
-                <!-- FixMe: Unklar ist jetzt noch wie die aufgebaute Struktur dann verarbeitet werden kann: -->
-               <xsl:copy-of select="$seite"/>
-<!--                <xsl:apply-templates select="$seite"/>-->
-            </body>
-        </html>
-    </xsl:template>
 
     <xd:doc>
-        <xd:desc><xd:p>Fragment extrahiert die Struktur und die Inhalte zwischen zwei Elementen.<xs:lb/>
-        Die Struktur besteht aus den beiden Elementen gemeinsamen übergeordneten XML-Struktur incl. Fragementen am Anfang und am Ende.</xd:p>
+        <xd:desc><xd:p><xd:b>rem:fragment()</xd:b> extrahiert die Struktur und die Inhalte zwischen zwei Elementen.<xs:lb/>
+            Die Struktur besteht aus den beiden Elementen gemeinsamen übergeordneten XML-Struktur incl. Fragementen am Anfang und am Ende.</xd:p>
         </xd:desc>
+        <xd:param>from: start element</xd:param>
+        <xd:param>to: end element</xd:param>
+        <xd:param>where: root element of the evaluation</xd:param>
+        <xd:return>tei structure starting at the $where-parameter of two elements and the content between these two elements</xd:return>
     </xd:doc>    
     <xsl:function name="rem:fragment">
         <xsl:param name="from"/>
@@ -47,7 +30,7 @@
             select="$to/preceding::*[.. = $where]|$to/preceding::text()[.. = $where]"/>
         <xsl:variable name="between" select="$preceding[count($following) = count($following| .)]"/>
         <!-- Aufbau der Struktur: -->
-        <xsl:element name="{$where/name()}">
+        <xsl:element name="{$where/name()}" namespace="{namespace-uri($where)}">
             <xsl:copy-of select="$where/@*"/>
             <!-- Anfangsfragment: 
             braucht eine Rekursion, damit nur Struktur und Inhalte übernommen werden, die auch nach dem Anfangselement vorkommen: -->
@@ -66,8 +49,22 @@
         </xsl:element>
     </xsl:function>
 
+    <!-- Beispiel: -->
+    <xsl:template match="/">
+        <xsl:variable name="pbs" select="//t:body//t:pb"/>
+        <xsl:variable name="pb-a" select="$pbs[1]"/> <!-- Ab hier soll ausgegeben werden -->
+        <!-- Seitenfragment: -->
+        <xsl:variable name="seite" select="rem:fragment($pb-a, $pb-a/following::t:pb[1], $pb-a/ancestor::node()[. = $pb-a/following::t:pb[1]/ancestor::node()][1])"/>
+        <html>
+            <head/>
+            <body>
+                <xsl:apply-templates select="$seite"/>
+            </body>
+        </html>
+    </xsl:template>
+
     <xd:doc>
-        <xd:desc>Darstellungstemplates</xd:desc>
+        <xd:desc>Darstellungstemplates, z.B.</xd:desc>
     </xd:doc>
     <xsl:template match="t:p|t:closer|t:fw">
         <p>
@@ -89,5 +86,8 @@
         <li>
             <xsl:apply-templates/>
         </li>
+    </xsl:template>
+    <xsl:template match="t:div">
+        <div><xsl:apply-templates/></div>
     </xsl:template>
 </xsl:stylesheet>
