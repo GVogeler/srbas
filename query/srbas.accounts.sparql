@@ -6,9 +6,11 @@ PREFIX bk:<http://gams.uni-graz.at/rem/bookkeeping/>
 PREFIX owl:<http://www.w3.org/2002/07/owl#>
 PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX g2o:<http://gams.uni-graz.at/onto/#>
-SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
+# Version 12.1.2015
+SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o ?subkontoname ?kontoname
 {
-    SERVICE <http://gams.uni-graz.at/sesame/sparqlendpoint>
+    SERVICE SILENT <http://gams.uni-graz.at/sesame/sparqlendpoint>
 	{
         ?konto bk:accountPath ?pfad .
         ?b bk:mainAccount ?konto ;
@@ -29,9 +31,13 @@ SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o
 	       ?bsub rdf:type <http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc> ;
 	          bk:amount ?asub .
 	      ?asub bk:num ?subbetrag .
+            OPTIONAL { ?subkonto skos:prefLabel ?subkontoname . }
+        }
+        OPTIONAL {
+            ?konto skos:prefLabel ?kontoname .
         }
     }
-    SERVICE <http://gams.uni-graz.at/mulgara/sparqlendpoint> 
+    SERVICE SILENT <http://gams.uni-graz.at/mulgara/sparqlendpoint> 
     {
        ?mo  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
     }

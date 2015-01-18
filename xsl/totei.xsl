@@ -17,12 +17,16 @@
             <xd:p>Das Stylesheet konvertiert die mit der TEI-Customization "rem-basel"
                 (http://gams.uni-graz.at/rem/rem-basel.odd) erstellen Dokumente in allgemeines TEI,
                 das in gams.uni-graz.at/rem verarbeitet wird.</xd:p>
-            <xd:p>Verwendet die Betragsumrechnungen auf Basis eines TEI-Stylesheets</xd:p>
-            <xd:p>Expandiert xi:imports</xd:p>
             <xd:p>Version 2014-12-23</xd:p>
             <xd:p>Georg Vogeler georg.vogeler@uni-graz.at</xd:p>
             <xd:ul>
                 <xd:li>2014-12-23: xsl:text mit Leerzeichen um xml:space="preserve" erweitert</xd:li>
+                <xd:li>Verwendet die Betragsumrechnungen auf Basis eines TEI-Stylesheets</xd:li>
+                <xd:li>Expandiert xi:imports</xd:li>
+            </xd:ul>
+            <xd:p>ToDo:</xd:p>
+            <xd:ul>
+                <xd:li>pb => Bildlink (facsimile/surface/graphic; @facs</xd:li>
             </xd:ul>
         </xd:desc>
     </xd:doc>

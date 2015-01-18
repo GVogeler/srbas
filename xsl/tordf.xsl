@@ -18,7 +18,12 @@
     <xd:doc><xd:desc><xd:p>Konvertiert ein TEI-Dokument mit Rechnungsmarkup (matches(@ana,'#bk_|#gl_') in RDF im Kontext des Editionsprojekts 'Basler Jahrrechnungen im 16. Jahrhundert'</xd:p>
     <xd:p>Georg Vogeler georg.vogeler@uni-graz.at, Version 2014-12-23</xd:p>
         <xd:ul>
+            <xd:li>2015-01-12: Kontennamen eingeführt</xd:li>
             <xd:li>2014-12-23: xsl:text für Leerzeichen braucht es nicht mehr, weil es schon im TEI steht</xd:li>
+        </xd:ul>
+        <xd:p>ToDo:</xd:p>
+        <xd:ul>
+            <xd:li>g2o:appears-on in CIDOC-CRM-Vokabular übersetzen</xd:li>
         </xd:ul>
     </xd:desc>
     </xd:doc>
@@ -115,6 +120,7 @@
             Die Existenz von Toplevel und die accountPaths müßte man generalisiert auslagern, d.h. nur beim Ingest von konten.xml ausführen, also einen Abarbeitungspfad legen, der von besonderen Eigenschaften von konten.xml abhängt, z.B. der PID 
         Dort müßten dann auch die skos:prefLabel zu den Konten ausgelesen werden, die in die Anzeigen einzugehen haben -->
         <rdf:Description rdf:about="{concat($xmlBaseAccounts,'#toplevel')}">
+            <skos:prefLabel>Alle Konten</skos:prefLabel>
             <bk:accountPath>/</bk:accountPath>
         </rdf:Description>
         <xsl:variable name="ausgaben">
@@ -180,7 +186,10 @@
     </xd:doc>
     <xsl:template match="tei:category" mode="accounts">
         <xsl:param name="accountPath"/>
-        <rdf:Description rdf:about="{concat($xmlBaseAccounts,'#',@xml:id)}">
+        <rdf:Description rdf:about="{concat($xmlBaseAccounts,'#',@xml:id)}">            
+                <xsl:apply-templates select="tei:catDesc"/>
+                <xsl:apply-templates select="tei:catDesc/tei:name" mode="accounts"/>
+            <!-- FixMe: Die Sprache mit berücksichtigen ... was Konsequenzen für die SPARQLs hat -->
             <xsl:variable name="levelup">
                 <xsl:choose>
                     <xsl:when test="parent::tei:category">
@@ -233,6 +242,18 @@
             <xsl:with-param name="accountPath" select="concat($accountPath,'/',@xml:id)"/>
         </xsl:apply-templates>
     </xsl:template>
+    <xd:doc>
+        <xd:desc>Die folgenden beiden Templates werten die Kontenliste näher aus</xd:desc>
+    </xd:doc>
+    <xsl:template match="tei:catDesc/tei:name" mode="accounts">
+        <skos:prefLabel><xsl:apply-templates /></skos:prefLabel>
+    </xsl:template>
+    <xsl:template match="tei:catDesc">
+        <skos:definition><xsl:apply-templates /></skos:definition>
+    </xsl:template>
+    <xd:doc>
+        <xd:desc>Falls es Schlagwörter gibt, werden sie hier ausgewertet</xd:desc>
+    </xd:doc>
     <xsl:template match="//tei:*[@xml:id='srbas-schlagwoerter']">
         <xsl:for-each select=".//tei:category">
             <rdf:Description>
@@ -270,6 +291,9 @@
             <g2o:hasKeyword rdf:resource="{$ref}"/>
         </rdf:Description>
     </xsl:template>
+    <xd:doc>
+        <xd:desc>Hier werden numerische Beträge gebildet</xd:desc>
+    </xd:doc>
     <xsl:template name="betrag">
         <!-- ToDo: Umrechnung zwischen beliebigen Maßangaben, also 
                 from (./@unit) und to als Parameter, mit Default und wenn @unit nicht in der Conversion-Tabelle vorhanden ist, erhalt der Maßangabe -->
