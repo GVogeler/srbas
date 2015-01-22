@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.tei-c.org/ns/1.0"
     xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:r="http://gams.uni-graz.at/rem/ns/1.0"
-    xmlns:rm="org.emile.roman.Roman" xmlns:t="http://www.tei-c.org/ns/1.0"
+    xmlns:t="http://www.tei-c.org/ns/1.0"
+    xmlns:bas="http://gams.uni-graz.at/srbas/ns/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    exclude-result-prefixes="xs bk rm t xd" version="2.0">
+    exclude-result-prefixes="xs bk bas t xd" version="2.0">
     <xsl:import
         href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
     <xd:doc>
@@ -26,7 +27,7 @@
             </xd:ul>
             <xd:p>ToDo:</xd:p>
             <xd:ul>
-                <xd:li>pb => Bildlink (facsimile/surface/graphic; @facs</xd:li>
+                <xd:li>pb => Bildlink: facsimile/surface/graphic; @facs</xd:li>
             </xd:ul>
         </xd:desc>
     </xd:doc>
@@ -36,7 +37,59 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-
+    <xd:doc>
+        <xd:desc>Hinter den teiHeader kommt eine facsimile-Gruppe</xd:desc>
+    </xd:doc>
+    <xsl:template match="t:teiHeader">
+        <xsl:copy>
+            <xsl:call-template name="id">
+                <xsl:with-param name="element" select="."/>
+            </xsl:call-template>
+            <xsl:if test="@*">
+                <xsl:copy-of select="@*"/>
+            </xsl:if>
+            <xsl:apply-templates select="comment()|text()|*|r:*"/>
+        </xsl:copy>
+        <xsl:if test="not(/t:TEI/t:facsimile)">
+            <facsimile>
+                <xsl:for-each select="//t:pb">
+                    <xsl:variable name="imagetype">jpg</xsl:variable><!-- Könnte automatisch ermittelt werden -->
+                    <xsl:variable name="filelocation">
+                        <xsl:value-of select="/t:TEI/t:teiHeader[1]/t:fileDesc[1]/t:sourceDesc[1]/t:msDesc[1]/t:msIdentifier[1]/concat(translate(substring-after(t:collection,'AHA '),' ','_'), '_', translate(t:idno[1],'.','_'))"/>
+                    </xsl:variable>
+                    <xsl:variable name="sz">
+                        <!-- Füllt die Seitenzahl um einleitende Nullen auf -->
+                        <xsl:choose>
+                            <xsl:when test="count(preceding::t:pb) + 1 lt 10"><xsl:text>00</xsl:text></xsl:when>
+                            <xsl:when test="count(preceding::t:pb) + 1 lt 100"><xsl:text>0</xsl:text></xsl:when>
+                        </xsl:choose>
+                        <xsl:value-of select="count(preceding::t:pb) + 1"></xsl:value-of>
+                    </xsl:variable>
+<!--                    <xsl:comment><xsl:value-of select="bas:folioangabe(.)"/></xsl:comment>-->
+                    <surface>
+                        <xsl:attribute name="xml:id"><xsl:text>fol_</xsl:text><xsl:value-of select="bas:folioangabe(.)"/></xsl:attribute>
+                        <graphic mimeType="image/{$imagetype}" url="{$filelocation}/{$filelocation}_{$sz}.{$imagetype}" xml:id="fol_{bas:folioangabe(.)}_{$imagetype}"/>
+                    </surface>
+                </xsl:for-each>
+            </facsimile>
+        </xsl:if>
+    </xsl:template>
+    <xd:doc>
+        <xd:desc>Und die t:pb müssen darauf verweisen</xd:desc>
+    </xd:doc>
+    <xsl:template match="t:pb">
+        <xsl:copy>
+            <xsl:call-template name="id">
+                <xsl:with-param name="element" select="."/>
+            </xsl:call-template>
+            <xsl:if test="@*">
+                <xsl:copy-of select="@*"/>
+            </xsl:if>
+            <xsl:attribute name="facs">#fol_<xsl:value-of select="bas:folioangabe(.)"/></xsl:attribute>
+            <xsl:apply-templates select="comment()|text()|*|r:*"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
@@ -361,4 +414,16 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <xsl:function name="bas:folioangabe">
+        <xsl:param name="me"/>
+        <xsl:variable name="anzahl" select="count($me/preceding::t:pb) + 1"/>
+        <xsl:choose>
+            <xsl:when test="$me/@n">
+                <xsl:value-of select="$me/@n"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="ceiling(($anzahl) div 2)"/><xsl:choose><xsl:when test="$anzahl mod 2 = 1"><xsl:text>r</xsl:text></xsl:when><xsl:otherwise><xsl:text>v</xsl:text></xsl:otherwise></xsl:choose></xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>

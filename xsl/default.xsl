@@ -2,12 +2,14 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:bas="http://gams.uni-graz.at/srbas/ns/1.0"
     xmlns:html="http://www.w3.org/1999/xhtml" exclude-result-prefixes="#default bk tei"
     version="2.0">
     <xsl:output omit-xml-declaration="yes" encoding="UTF-8" indent="yes"/>
     <!-- Anzeige von Rechnungen, 2013-12-16:
     Standardansicht
     
+    2015-01-22: seitenzahlen in Funktion bas:folioangabe($me) ausgelagert. In externe Bibliothek verlagert werden?
     2014-08-28: Trefferhervorhebung über template@name="highlighting"
     2014-06-06: Betragsberechnungen verbesser: arabische Zahlen im Text nur, wenn es keine @quantity gibt
     2014-06-04: tei:p um Klammern erweitert. ToDo: Bei Klammern in Klammern funktioniert das vermutlich nicht, weil StandOff
@@ -296,14 +298,8 @@
     <xsl:template match="tei:pb">
         <!-- Seitenwechsel mit Link auf das Bild -->
         <xsl:variable name="facs" select="substring-after(./@facs, '#')"/>
-        <xsl:variable name="seitenzahl">
-            <xsl:choose>
-                <xsl:when test="@n"><xsl:value-of select="@n"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="ceiling((count(preceding::tei:pb) + 1) div 2)"/>
-                <xsl:choose><xsl:when test="(count(preceding::tei:pb) + 1) mod 2 = 1">r</xsl:when>
-                <xsl:otherwise>v</xsl:otherwise></xsl:choose></xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
+        <xsl:variable name="seitenzahl" select="bas:folioangabe(.)"/>
+        
         <a>
             <xsl:attribute name="name" select="./@xml:id"/>
         </a>
@@ -799,5 +795,19 @@
         </xsl:variable>
         <xsl:value-of select="bk:reduce(number($amount), $data_as)"/>
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Die Seitenzahlen tragen errechnete Bezeichner
+        ToDo: auslagern eine gemeinsame Ressource, die auch schon beim totei berücksichtigt wird?</xd:desc>
+    </xd:doc>
+    <xsl:function name="bas:folioangabe">
+        <xsl:param name="me"/>
+        <xsl:choose>
+            <xsl:when test="$me/@n"><xsl:value-of select="$me/@n"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="ceiling((count($me/preceding::tei:pb) + 1) div 2)"/>
+                <xsl:choose><xsl:when test="(count($me/preceding::tei:pb) + 1) mod 2 = 1">r</xsl:when>
+                    <xsl:otherwise>v</xsl:otherwise></xsl:choose></xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
     
 </xsl:stylesheet>
