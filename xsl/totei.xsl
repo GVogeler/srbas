@@ -100,10 +100,6 @@
     <xd:doc>
         <xd:desc>Ein paar Attribute will ich nicht kopieren, weil sie aus Defaultangaben der TEI stammen.</xd:desc>
     </xd:doc>
-    <xsl:template match="@instant|@status|@part|@scope" priority="-1"/>
-    <xd:doc>
-        <xd:desc>Außer @part, @instant, @status, ... </xd:desc>
-    </xd:doc>
     <xsl:template match="@part|@instant|@status|@scope|@uniform|@sample" priority="-1"/>
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
