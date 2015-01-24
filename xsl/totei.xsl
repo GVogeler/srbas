@@ -100,7 +100,7 @@
     <xd:doc>
         <xd:desc>Ein paar Attribute will ich nicht kopieren, weil sie aus Defaultangaben der TEI stammen.</xd:desc>
     </xd:doc>
-    <xsl:template match="@part|@instant|@status|@scope|@uniform|@sample" priority="-1"/>
+    <xsl:template match="@part|@instant|@status|@uniform|@sample" priority="-1"/>
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
@@ -150,8 +150,9 @@
     </xsl:template>
 
     <xd:doc>
-        <xd:desc><xd:p>Umwandlung der Summen</xd:p>
-        <xd:p><xd:b>FixMe:</xd:b> die Ersetzung durch closer ist ein Erfahrungswert und nicht aus der Rechnungslogik/dem TEI-Modell abgeleitet.</xd:p></xd:desc>
+      <xd:desc><xd:p>Umwandlung der Summen</xd:p>
+        <xd:p><xd:b>FixMe:</xd:b> die Ersetzung durch closer ist ein Erfahrungswert und nicht aus der Rechnungslogik/dem TEI-Modell abgeleitet.</xd:p>
+      </xd:desc>
     </xd:doc>
     <xsl:template match="r:sum">
         <xsl:variable name="ename">
@@ -172,7 +173,7 @@
                         </xsl:call-template>
                         <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                         </xsl:attribute>
-                        <xsl:apply-templates select="@*"/>
+                        <xsl:apply-templates select="@*[name()!='scope']"/>
                         <xsl:apply-templates/>
                     </xsl:element>
                 </div>
@@ -184,7 +185,7 @@
                     </xsl:call-template>
                     <xsl:attribute name="ana">#bk_total <xsl:value-of select="@scope"/>
                     </xsl:attribute>
-                    <xsl:apply-templates select="@*"/>
+                    <xsl:apply-templates select="@*[name()!='scope']"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:otherwise>

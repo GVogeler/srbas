@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mm:metadata-mapping xmlns:mm="http://mml.uni-graz.at/v1.0">
+  <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:t="http://www.tei-c.org/ns/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <dc:title>
+      <mm:map select="//t:teiHeader/t:fileDesc/t:titleStmt/t:title" />
+    </dc:title>
+    <dc:creator>
+      <mm:map select="concat(//t:teiHeader/t:fileDesc/t:titleStmt/t:respStmt[1]/t:resp,' ', //t:teiHeader/t:fileDesc/t:titleStmt/t:respStmt[1]/./t:persName)" />
+    </dc:creator>
+    <dc:publisher>
+      <mm:map select="//t:publisher" />
+    </dc:publisher>
+    <dc:language>
+      <mm:map select="//t:langUsage/t:language/@ident" />
+    </dc:language>
+    <dc:date>
+      <mm:map select="concat(//t:teiHeader//t:sourceDesc/t:msDesc[1]//t:origDate/@from, ' - ', //t:teiHeader//t:sourceDesc/t:msDesc[1]//t:origDate/@to)" />
+    </dc:date>
+    <dc:identifier>this:PID</dc:identifier>
+    <dc:source><mm:map select="//t:teiHeader//t:sourceDesc/t:msDesc[1]/t:msIdentifier"/></dc:source>
+  </oai_dc:dc>
+</mm:metadata-mapping>
+
