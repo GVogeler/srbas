@@ -1,0 +1,16 @@
+select distinct * where { <fedora:context:srbas> <dc:title> ?container .
+                  ?cid  <dc:title> ?container .
+                  ?pid  <fedora-rels-ext:isMemberOf> <fedora:context:srbas> .
+                  ?pid  <fedora-model:hasModel> ?model .
+                  ?pid  <fedora-model:ownerId> ?ownerId .
+                  ?pid  <fedora-model:createdDate> ?createdDate .
+                  ?pid  <fedora-view:lastModifiedDate> ?lastModifiedDate . 
+                  ?pid  <dc:title> ?title .
+                  ?pid  <dc:identifier> ?identifier .
+                  ?pid  <dc:creator> ?creator .
+                  ?pid  <dc:date> ?date .
+                  ?pid  <dc:source> ?source .
+                  optional { ?pid <dc:description> ?description} . 
+                  filter regex(str(?model), "^info:fedora/cm:") 
+             }
+             ORDER BY ?date
