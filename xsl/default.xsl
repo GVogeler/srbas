@@ -307,7 +307,7 @@
             <a name="fol{$seitenzahl}"/>
             <a target="_blank">
                 <xsl:attribute name="href">
-                    <xsl:value-of select="//tei:surface[@xml:id = $facs]/tei:graphic/@url"/>
+                    <xsl:text>/archive/objects/</xsl:text><xsl:value-of select="$pid"/><xsl:text>/datastreams/</xsl:text><xsl:value-of select="//tei:surface[@xml:id = $facs]/tei:graphic/@xml:id"/><xsl:text>/content</xsl:text>
                 </xsl:attribute>
                 <xsl:text>fol. </xsl:text>
                 <xsl:value-of select="$seitenzahl"/>
