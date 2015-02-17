@@ -28,6 +28,7 @@
       </projectDesc>
     </encodingDesc>
     <revisionDesc>
+      <change when="2015-02-17" who="#GV">r:klammer can't contain tei:div</change>
       <change when="2014-11-14" who="#GV">Added r:exp (to replace r:sup)</change>
       <change when="2014-11-03" who="#GV">r:e, r:sum and tei:p reduced to p-model</change>
     </revisionDesc>
@@ -89,12 +90,12 @@
                     xmlns:rng="http://relaxng.org/ns/structure/1.0"
                     name="macro.paraContent"/>
           </content>
-<!--          <attList>
+          <attList>
             <attDef ident="scope" mode="add">
               <desc>Gibt an, &#xFC;ber welchen Bereich, die Summe gezogen wird, z.B. bk_page,
                 bk_account</desc>
             </attDef>
-          </attList>-->
+          </attList>
         </elementSpec>
         <elementSpec ident="b" ns="http://gams.uni-graz.at/rem/ns/1.0"
                mode="add">
@@ -190,8 +191,8 @@
           <content>
             <alternate>
               <classRef key="model.pLike" maxOccurs="unbounded"/>
-              <elementRef key="div" minOccurs="0"
-                    maxOccurs="unbounded"/>
+              <!--<elementRef key="div" minOccurs="0"
+                    maxOccurs="unbounded"/>-->
             </alternate>
           </content>
           <attList>
