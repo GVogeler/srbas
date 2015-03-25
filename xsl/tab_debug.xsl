@@ -6,6 +6,7 @@
     version="2.0">
     <!-- Ausgabe als Tabelle für DebuggingZwecke
         
+        2015-03-25: Hervorhebung für addSpan
         2014-07-30: Seitensummen aus dem richtigen CommonAncestor gebildet, GV
         2014-06-05: Aufruf von Templates aus Divisions aufgeräumt, GV
     -->
@@ -30,9 +31,9 @@
                 <tr>
                     <td>Kategorie</td><td>Originaltext</td>
                     <td>Betrag in 1 lb = 20 ß = 240 d</td><xsl:if test=".//tei:*[@ana='#bk_entry']//tei:term">
-                    <td>Errechnete Summe in lb</td>
-                    <td>Betrag in Pfennig</td>
-                    <td>Errechnete Summe in Pfennig</td><td>Schlagwörter</td></xsl:if>
+                        <td>Errechnete Summe in lb</td>
+                        <td>Betrag in Pfennig</td>
+                        <td>Errechnete Summe in Pfennig</td><td>Schlagwörter</td></xsl:if>
                 </tr>
             </thead>
             <tbody>
@@ -78,9 +79,9 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:for-each select="ancestor::tei:div[1]//tei:*[matches(@ana,'#bk_entry')]">
-                    <betrag><xsl:call-template name="betrag"/></betrag>
-                </xsl:for-each>
-            </xsl:otherwise>
+                        <betrag><xsl:call-template name="betrag"/></betrag>
+                    </xsl:for-each>
+                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="sumCalc" select="string(sum($betraege/*/number(text())))"/>
@@ -92,7 +93,7 @@
         </xsl:variable>
         <tr>
             <td />
-            <td class="Buchungstext Summe grid"><xsl:apply-templates select="."/></td>
+            <td><xsl:attribute name="class">Buchungstext Summe grid<xsl:if test="preceding-sibling::*[1]/name()='addSpan'"><xsl:text> addSpan</xsl:text></xsl:if></xsl:attribute><xsl:apply-templates select="."/></td>
             <td class="grid Summe {$correct}"><xsl:apply-templates mode="tab-reduce" select="tei:*[@ana='#bk_amount']"/></td>
             <td class="ErrechneteSumme Summe lg grid {$correct}"><xsl:value-of select="bk:reduce(sum($betraege/*/number(text())),'')"/></td>
             <!-- Berechnete Summe:
@@ -110,7 +111,7 @@
         <!-- Die einzelnen Buchungssätze -->
         <tr>
             <td/>
-            <td class="Buchungstext grid"><xsl:apply-templates select="."/></td>
+            <td><xsl:attribute name="class">Buchungstext grid<xsl:if test="preceding-sibling::*[1]/name()='addSpan'"><xsl:text> addSpan</xsl:text></xsl:if></xsl:attribute><xsl:apply-templates select="."/></td>
             <xsl:choose>
                 <xsl:when test="count(.//tei:*[@ana='#bk_amount']) gt 1 ">
                     <td class="grid">
@@ -125,12 +126,12 @@
                     <td></td>
                     <td clas="grid">
                         <table>
-                        <xsl:for-each select=".//tei:*[@ana='#bk_amount']">
-                            <tr>
-                                <td class="Buchungsbetrag"><xsl:apply-templates select="." mode="tab-debug"/></td>
-                            </tr>
-                        </xsl:for-each>
-                    </table>
+                            <xsl:for-each select=".//tei:*[@ana='#bk_amount']">
+                                <tr>
+                                    <td class="Buchungsbetrag"><xsl:apply-templates select="." mode="tab-debug"/></td>
+                                </tr>
+                            </xsl:for-each>
+                        </table>
                     </td>
                 </xsl:when>
                 <xsl:otherwise>
@@ -143,7 +144,7 @@
             <xsl:apply-templates select=".//tei:term"/>
         </tr>
     </xsl:template>
-
+    
     <xsl:template match="tei:term">
         <!-- Die Stichwörter -->
         <xsl:choose>
@@ -160,18 +161,22 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
+    
     <xsl:template mode="tab-debug" match="tei:*[@ana='#bk_amount']">
         <!-- Beträge -->
         <xsl:variable name="data_as">
             <xsl:value-of select="ancestor-or-self::node()[matches(@ana,'^.*?(#bk_[id]).*?$') ][1]/replace(@ana,'^.*?(#bk_[id]).*?$','$1')"/>
         </xsl:variable>
+        <xsl:if test="@rend='rbms'">
+            <xsl:text> ------- </xsl:text>
+        </xsl:if>
+        <xsl:text> </xsl:text>
         <xsl:if test="$data_as = '#bk_d'">
             <xsl:text>-</xsl:text>
         </xsl:if>
         <xsl:call-template name="betrag"/>
     </xsl:template>
-
+    
     <xsl:template match="tei:pb" mode="tab-debug">
         <xsl:variable name="seitenzahl">
             <xsl:choose>
