@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.tei-c.org/ns/1.0"
     xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:r="http://gams.uni-graz.at/rem/ns/1.0"
-    xmlns:t="http://www.tei-c.org/ns/1.0"
-    xmlns:bas="http://gams.uni-graz.at/srbas/ns/1.0"
+    xmlns:rm="org.emile.roman.Roman" xmlns:t="http://www.tei-c.org/ns/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    exclude-result-prefixes="xs bk bas t xd" version="2.0">
+    exclude-result-prefixes="xs bk rm t xd" version="2.0">
     <xsl:import
         href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
     <xd:doc>
@@ -18,18 +17,10 @@
             <xd:p>Das Stylesheet konvertiert die mit der TEI-Customization "rem-basel"
                 (http://gams.uni-graz.at/rem/rem-basel.odd) erstellen Dokumente in allgemeines TEI,
                 das in gams.uni-graz.at/rem verarbeitet wird.</xd:p>
-            <xd:p>Version 2014-12-23</xd:p>
+            <xd:p>Verwendet die Betragsumrechnungen auf Basis eines TEI-Stylesheets</xd:p>
+            <xd:p>Expandiert xi:imports</xd:p>
+            <xd:p>Version 2014-10-21</xd:p>
             <xd:p>Georg Vogeler georg.vogeler@uni-graz.at</xd:p>
-            <xd:ul>
-                <xd:li>2015-01-22: Aufbau einer Facsimile-Struktur</xd:li>
-                <xd:li>2014-12-23: xsl:text mit Leerzeichen um xml:space="preserve" erweitert</xd:li>
-                <xd:li>Verwendet die Betragsumrechnungen auf Basis eines TEI-Stylesheets</xd:li>
-                <xd:li>Expandiert xi:imports</xd:li>
-            </xd:ul>
-            <xd:p>ToDo:</xd:p>
-            <xd:ul>
-                <xd:li>pb => Bildlink: facsimile/surface/graphic; @facs</xd:li>
-            </xd:ul>
         </xd:desc>
     </xd:doc>
     <xsl:output exclude-result-prefixes="#all" indent="yes"/>
@@ -38,69 +29,14 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xd:doc>
-        <xd:desc>Hinter den teiHeader kommt eine facsimile-Gruppe</xd:desc>
-    </xd:doc>
-    <xsl:template match="t:teiHeader">
-        <xsl:copy>
-            <xsl:call-template name="id">
-                <xsl:with-param name="element" select="."/>
-            </xsl:call-template>
-            <xsl:if test="@*">
-                <xsl:copy-of select="@*"/>
-            </xsl:if>
-            <xsl:apply-templates select="comment()|text()|*|r:*"/>
-        </xsl:copy>
-        <xsl:if test="not(/t:TEI/t:facsimile)">
-            <facsimile>
-                <xsl:for-each select="//t:pb">
-                    <xsl:variable name="imagetype">jpg</xsl:variable><!-- Könnte automatisch ermittelt werden -->
-                    <xsl:variable name="filelocation">
-                        <xsl:value-of select="/t:TEI/t:teiHeader[1]/t:fileDesc[1]/t:sourceDesc[1]/t:msDesc[1]/t:msIdentifier[1]/concat(translate(substring-after(t:collection,'AHA '),' ','_'), '_', translate(t:idno[1],'.','_'))"/>
-                    </xsl:variable>
-                    <xsl:variable name="sz">
-                        <!-- Füllt die Seitenzahl um einleitende Nullen auf -->
-                        <xsl:choose>
-                            <xsl:when test="count(preceding::t:pb) + 1 lt 10"><xsl:text>00</xsl:text></xsl:when>
-                            <xsl:when test="count(preceding::t:pb) + 1 lt 100"><xsl:text>0</xsl:text></xsl:when>
-                        </xsl:choose>
-                        <xsl:value-of select="count(preceding::t:pb) + 1"></xsl:value-of>
-                    </xsl:variable>
-<!--                    <xsl:comment><xsl:value-of select="bas:folioangabe(.)"/></xsl:comment>-->
-                    <surface>
-                        <xsl:attribute name="xml:id"><xsl:text>fol_</xsl:text><xsl:value-of select="bas:folioangabe(.)"/></xsl:attribute>
-                        <graphic mimeType="image/{$imagetype}" url="{$filelocation}/{$filelocation}_{$sz}.{$imagetype}" xml:id="fol_{bas:folioangabe(.)}_{$imagetype}"/>
-                    </surface>
-                </xsl:for-each>
-            </facsimile>
-        </xsl:if>
-    </xsl:template>
-    <xd:doc>
-        <xd:desc>Und die t:pb müssen darauf verweisen</xd:desc>
-    </xd:doc>
-    <xsl:template match="t:pb">
-        <xsl:copy>
-            <xsl:call-template name="id">
-                <xsl:with-param name="element" select="."/>
-            </xsl:call-template>
-            <xsl:if test="@*">
-                <xsl:copy-of select="@*"/>
-            </xsl:if>
-            <xsl:attribute name="facs">#fol_<xsl:value-of select="bas:folioangabe(.)"/></xsl:attribute>
-            <xsl:apply-templates select="comment()|text()|*|r:*"/>
-        </xsl:copy>
-    </xsl:template>
-    
+
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
     <xsl:template match="comment()|text()|@*" priority="-2">
         <xsl:copy/>
     </xsl:template>
-    <xd:doc>
-        <xd:desc>Ein paar Attribute will ich nicht kopieren, weil sie aus Defaultangaben der TEI stammen.</xd:desc>
-    </xd:doc>
-    <xsl:template match="@part|@instant|@status|@uniform|@sample" priority="-1"/>
+
     <xd:doc>
         <xd:desc>Catch all and copy</xd:desc>
     </xd:doc>
@@ -150,9 +86,8 @@
     </xsl:template>
 
     <xd:doc>
-      <xd:desc><xd:p>Umwandlung der Summen</xd:p>
-        <xd:p><xd:b>FixMe:</xd:b> die Ersetzung durch closer ist ein Erfahrungswert und nicht aus der Rechnungslogik/dem TEI-Modell abgeleitet.</xd:p>
-      </xd:desc>
+        <xd:desc><xd:p>Umwandlung der Summen</xd:p>
+        <xd:p><xd:b>FixMe:</xd:b> die Ersetzung durch closer ist ein Erfahrungswert und nicht aus der Rechnungslogik/dem TEI-Modell abgeleitet.</xd:p></xd:desc>
     </xd:doc>
     <xsl:template match="r:sum">
         <xsl:variable name="ename">
@@ -173,7 +108,7 @@
                         </xsl:call-template>
                         <xsl:attribute name="ana">#bk_total <xsl:value-of select="@extend"/>
                         </xsl:attribute>
-                        <xsl:apply-templates select="@*[name()!='extend']"/>
+                        <xsl:apply-templates select="@*"/>
                         <xsl:apply-templates/>
                     </xsl:element>
                 </div>
@@ -185,7 +120,7 @@
                     </xsl:call-template>
                     <xsl:attribute name="ana">#bk_total <xsl:value-of select="@extend"/>
                     </xsl:attribute>
-                    <xsl:apply-templates select="@*[name()!='extend']"/>
+                    <xsl:apply-templates select="@*"/>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:otherwise>
@@ -204,13 +139,15 @@
                 <xsl:otherwise>seg</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:text xml:space="preserve"> </xsl:text><xsl:element name="{$element-name}">
+        <xsl:text> </xsl:text>
+        <xsl:element name="{$element-name}">
             <xsl:call-template name="id">
                 <xsl:with-param name="element" select="."/>
             </xsl:call-template>
             <xsl:attribute name="ana">#bk_amount</xsl:attribute>
-            <xsl:apply-templates select="@*"/><xsl:apply-templates/>
-        </xsl:element><xsl:text xml:space="preserve"> </xsl:text>
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates/>
+        </xsl:element>
     </xsl:template>
 
     <xd:doc>
@@ -229,7 +166,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfundangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:lbd">
-        <xsl:text xml:space="preserve"> </xsl:text>
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -242,7 +179,7 @@
         <xd:desc>Umwandlung von allgemeinen Schillingangaben (kurzer Schilling)</xd:desc>
     </xd:doc>
     <xsl:template match="r:ß|r:sh">
-        <xsl:text xml:space="preserve"> </xsl:text>
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -255,7 +192,7 @@
         <xd:desc>Umwandlung von allgemeinen Pfennigangaben</xd:desc>
     </xd:doc>
     <xsl:template match="r:d">
-        <xsl:text xml:space="preserve"> </xsl:text>
+        <xsl:text> </xsl:text>
         <measure>
             <xsl:call-template name="umrechnung"/>
             <xsl:attribute name="type">currency</xsl:attribute>
@@ -275,7 +212,7 @@
     <xsl:template match="r:sup|r:exp">
         <seg rend="super">
             <xsl:apply-templates/>
-        </seg><xsl:text xml:space="preserve"> </xsl:text>
+        </seg>
     </xsl:template>
 
 
@@ -339,7 +276,7 @@
     <xsl:template match="r:klammer">
         <metamark>
             <xsl:attribute name="rend">Klammer<xsl:if test="@rend">
-                    <xsl:text xml:space="preserve"> </xsl:text>
+                    <xsl:text/>
                     <xsl:value-of select="@rend"/>
                 </xsl:if>
             </xsl:attribute>
@@ -375,7 +312,7 @@
             <xsl:attribute name="xml:id">
                 <xsl:if test="name($element)='div' and $element/head/text()">
                     <xsl:value-of select="$element/head/text()"/>
-                    <xsl:text xml:space="preserve">_</xsl:text>
+                    <xsl:text>_</xsl:text>
                 </xsl:if>
                 <xsl:value-of select="generate-id(.)"/>
             </xsl:attribute>
@@ -412,16 +349,4 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
-    <xsl:function name="bas:folioangabe">
-        <xsl:param name="me"/>
-        <xsl:variable name="anzahl" select="count($me/preceding::t:pb) + 1"/>
-        <xsl:choose>
-            <xsl:when test="$me/@n">
-                <xsl:value-of select="$me/@n"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="ceiling(($anzahl) div 2)"/><xsl:choose><xsl:when test="$anzahl mod 2 = 1"><xsl:text>r</xsl:text></xsl:when><xsl:otherwise><xsl:text>v</xsl:text></xsl:otherwise></xsl:choose></xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
 </xsl:stylesheet>
