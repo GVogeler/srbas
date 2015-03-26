@@ -45,7 +45,7 @@
         <!-- Ordnet nach Konten -->
         <!-- ToDo: Man könnte noch die normalisierten Kontenbezeichner einbauen -->
         <xsl:if test="tei:head"><tr><td class="grid"><b><xsl:call-template name="striche"><xsl:with-param name="level-max" select="$level"/><xsl:with-param name="level-curr">0</xsl:with-param></xsl:call-template><xsl:value-of select="tei:head"/></b></td></tr></xsl:if>
-        <xsl:apply-templates select="tei:div|tei:list|tei:item/tei:list|tei:item/tei:div|tei:pb|tei:p|tei:fw|tei:closer" mode="tab-debug">
+        <xsl:apply-templates select="tei:div|tei:list|tei:item/tei:list|tei:item/tei:div|tei:pb|tei:p|tei:fw|tei:closer|tei:note|tei:head" mode="tab-debug">
             <xsl:with-param name="level" select="number($level)+1"/>
         </xsl:apply-templates>
     </xsl:template>
@@ -143,6 +143,10 @@
             <!-- Die Stichwörter -->
             <xsl:apply-templates select=".//tei:term"/>
         </tr>
+    </xsl:template>
+    
+    <xsl:template match="tei:p[not(matches(@ana,'#bk_'))]|tei:body/tei:note|tei:body/tei:head" priority="-1" mode="tab-debug">
+        <tr><td colspan="100"><xsl:attribute name="class">grid<xsl:if test="preceding-sibling::*[1]/name()='addSpan'"><xsl:text> addSpan</xsl:text></xsl:if></xsl:attribute><xsl:apply-templates /></td></tr>
     </xsl:template>
     
     <xsl:template match="tei:term">
