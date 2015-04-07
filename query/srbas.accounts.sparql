@@ -7,8 +7,8 @@ PREFIX owl:<http://www.w3.org/2002/07/owl#>
 PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX g2o:<http://gams.uni-graz.at/onto/#>
 PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
-# Version 12.1.2015
-SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o ?subkontoname ?kontoname
+# Version 12.1.2015 
+SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o ?subkontoname ?kontoname ?as ?assub
 {
     SERVICE SILENT <http://gams.uni-graz.at/sesame/sparqlendpoint>
 	{
@@ -17,7 +17,8 @@ SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o ?subkont
 	       g2o:partOf ?o ;
 	       rdf:type <http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc> ;
 	       bk:amount ?a .
-	    ?a bk:num ?betrag .
+	    ?a bk:num ?betrag ;
+           bk:as ?as
         FILTER(sameTerm(?konto, $1))
 
         ?o dc:date ?jahr ;
@@ -30,7 +31,8 @@ SELECT DISTINCT ?von ?jahr ?konto ?pfad ?betrag ?subkonto ?subbetrag ?o ?subkont
 	       g2o:partOf ?o .
 	       ?bsub rdf:type <http://gams.uni-graz.at/rem/bookkeeping/#bk_total_calc> ;
 	          bk:amount ?asub .
-	      ?asub bk:num ?subbetrag .
+	      ?asub bk:num ?subbetrag ;
+                bk:as ?assub .
             OPTIONAL { ?subkonto skos:prefLabel ?subkontoname . }
         }
         OPTIONAL {
