@@ -5,7 +5,7 @@
     xmlns:t="http://www.tei-c.org/ns/1.0" exclude-result-prefixes="xs" version="2.0">
     <xd:doc>
         <xd:desc>Seitenweise HTML-Ansicht
-        Georg Vogeler georg.vogeler@uni-graz.at, 2015-01-18
+        Georg Vogeler georg.vogeler@uni-graz.at, 2015-04-10
         </xd:desc>
     </xd:doc>
 
@@ -28,7 +28,7 @@
             select="$from/following::*[.. = $where]|$from/following::text()[.. = $where]"/>
         <xsl:variable name="preceding"
             select="$to/preceding::*[.. = $where]|$to/preceding::text()[.. = $where]"/>
-        <xsl:variable name="between" select="$preceding[count($following) = count($following| .)]"/>
+        <xsl:variable name="between" select="$preceding intersect $following"/>
         <!-- Aufbau der Struktur: -->
         <xsl:element name="{$where/name()}" namespace="{namespace-uri($where)}">
             <xsl:copy-of select="$where/@*"/>
