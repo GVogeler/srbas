@@ -1,24 +1,24 @@
 /* Baut aus einem Formuler einen GAMS-Sparql-Parameter:
 $1|param1;$2|param2
 
-param1 = Suchstichwˆrter 
-param2 ein SPARQL-Ausdruck, der die Suchstichwˆrter und einen Constraint enth‰lt: Z.B. 
+param1 = Suchstichw√∂rter 
+param2 ein SPARQL-Ausdruck, der die Suchstichw√∂rter und einen Constraint enth√§lt: Z.B. 
 
-       # FILTER(regex(?text,"...","i")) # Regul‰rer Ausdruck
-       # FILTER(regex(?text,"...1","i") && regex(?text, "...2", "i")) #  Regul‰rer Ausdruck auf einzelne Wˆrter
+       # FILTER(regex(?text,"...","i")) # Regul√§rer Ausdruck
+       # FILTER(regex(?text,"...1","i") && regex(?text, "...2", "i")) #  Regul√§rer Ausdruck auf einzelne W√∂rter
        # ?text bds:search "..." ;
-       #    bds:matchAllTerms "true" . # Volltextsuche mit und-Verkn¸pfung
-       # ??? Volltextsuche mit nicht-Verkn¸pfung
+       #    bds:matchAllTerms "true" . # Volltextsuche mit und-Verkn√ºpfung
+       # ??? Volltextsuche mit nicht-Verkn√ºpfung
        # ??? Volltextsuche mit komplexer Syntax: oder/und/nicht kombiniert
-       # FILTER(?jahr <= .... && ?jahr >= ...) # Zeitliche Einschr‰nkung
-       # ?konto bk:account <... Konto ...> . # Einschr‰nkung auf Konto (incl. Unterkonten)
+       # FILTER(?jahr <= .... && ?jahr >= ...) # Zeitliche Einschr√§nkung
+       # ?konto bk:account <... Konto ...> . # Einschr√§nkung auf Konto (incl. Unterkonten)
        # ??? Liste von Konten
-       # FILTER(?betrag >= ...) # wobei der Vergleichsoperator mit ¸bergeben wird
+       # FILTER(?betrag >= ...) # wobei der Vergleichsoperator mit √ºbergeben wird
 
-Das Formular enth‰lt
+Das Formular enth√§lt
 input["Stichwort"]
 input["Suchart"] ('regex' oder 'fulltext')
-?? verkn¸pfung der Suchausdr¸cke: alle "und", alle "oder", individuell?
+?? verkn√ºpfung der Suchausdr√ºcke: alle "und", alle "oder", individuell?
 input["jahrVor"], input["jahrNach"]
 input["konto"] : SELECT-Liste mit Kontoname (Kontopfad) => Konto-URI
 input["betrag"], input["betragsoperator"]
@@ -26,49 +26,42 @@ input["betrag"], input["betragsoperator"]
 input["params"].hidden
 
 
-Problem:
-Ein String mit ? und & wird als explizite Parameter ausgewertet
-
-Derzeit wird
-
-http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?params=$1|jarlon zunfftmeister;$2|%3Ftext bds:search "jarlon zunfftmeister" ; bds:matchAllTerms "true" . FILTER(%3Fjahr <= 1580 %26%26 %3Fjahr >= 1545) %3Fentry bk:account <http://gams.uni-graz.at/rem/%23bs_Ausgaben> . 
-
-gebaut, das als direkter Link nicht richtig ausgewertet wird.
-
-%3F = ?
-%26 = &
-%24 = $
-
-http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?params=$1|jarlon zunfftmeister;$2|?text bds:search "jarlon zunfftmeister" ; bds:matchAllTerms "true" . FILTER(?jahr <= 1580 && ?jahr >= 1545) ?entry bk:account <http://gams.uni-graz.at/rem/%23bs_Ausgaben> . 
-
-http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?params=$1|jarlon zunfftmeister;$2|?text bds:search "jarlon zunfftmeister" ; bds:matchAllTerms "true" .
 
 Maskierung von Suchanfragen
 + => %2b
+%3F = ?
+%26 = &
+%24 = $
 
 Problem mit Regex-Maskierung: SESAME erwartet \\ ?
 
 */
 function addParamsExt(me) {
+    /* TODO: Kontrolle, da√ü mindestens ein Suchbegriff √ºbergeben wird: me.Stichwort.value darf nicht NULL sein, sonst ...?*/
 	/* me ist das aktuelle Formular, da es auf einer Seite mehrere Formulare geben kann */
-		/* Es muﬂ dann die Verarbeitung der $2-Parameter folgen */
-		var Stichwoerter = searchTerms(me.Stichwort.value) ; /* Gibt einen Array aus Stichwˆrtern und Operatoren zur¸ck */
+		/* Es mu√ü dann die Verarbeitung der $2-Parameter folgen */
+		var Stichwoerter = searchTerms(me.Stichwort.value) ; /* Gibt einen Array aus Stichw√∂rtern (Stichwoerter['Stichwoerter'] oder Stichwoerter['operators']) zur√ºck */
 		//alert(Stichwoerter['Stichwoerter'][0]);
-		/* Hier aus den Stichwˆrtern und Operatoren je nach Suchart einen einschl‰gigen Suchstring bilden: */
+		/* Hier aus den Stichw√∂rtern und Operatoren je nach Suchart einen einschl√§gigen Suchstring bilden: */
 		var param2 = new String() ;
-		if(me.Suchart.value == 'fulltext') { // FixMe: Das gilt nur wenn es nicht unterschiedliche Operatoren gibt, sonst muﬂ ich gruppieren ...
-			param2 += "?text bds:search " + '"' + me.Stichwort.value + '" .';
-			param2 += '?text bds:matchAllTerms "true" .'  ; //FixMe: Hier einen Oder-Parameter als "false" ¸bernehmen 
+		if(me.Suchart.value == 'fulltext') { // FixMe: Das gilt nur wenn es nicht unterschiedliche Operatoren gibt, sonst mu√ü ich gruppieren ...
+			/* ToDo: 1. Alle Stichw√∂rter ohne operators oder mit Plus als  operators */
+			param2 += "%3Ftext bds:search " + '"' + me.Stichwort.value + '" .';
+			param2 += '%3Ftext bds:matchAllTerms "true" .'  ;
+			/* 2. Alle Stichw√∂rter mit Minus (nicht) als operators */
+			
+			/* 3. Alle Stichw√∂rter mit Strich (kann) als operators */
+			
 		}
 		else if(me.Suchart.value == 'regex') {
-			/* regex-Ausdr¸cke maskieren?
+			/* regex-Ausdr√ºcke maskieren?
 			\ => %5C ??? Wie wird das durch die Verarbeitungskette gereicht?
 			' und " maskieren?
 			*/
 			param2 += " FILTER(" ;
 			for(i = 0; i < Stichwoerter['Stichwoerter'].length; i++){
 				if(i > 0) {
-					param2 +=' %26%26 '; //FixMe: Das muﬂ ggf. den Operatoren angepaﬂt werden
+					param2 +=' %26%26 '; //FixMe: Das mu√ü ggf. den Operatoren angepa√üt werden
 				}
 				param2 +='regex(%3Ftext,"'+ encodeURIComponent('\\\\b' + Stichwoerter['Stichwoerter'][i] + '\\\\b') +'","i")';
 			}
@@ -81,8 +74,8 @@ function addParamsExt(me) {
 		input["betragsoperator"]
 		
 		*/
+	   // #### Zeitliche Einschr√§nkung: FILTER(?jahr <= .... && ?jahr >= ...) 
 	   if(me.jahrVor.value != '' || me.jahrNach.value != '') {
-	   	   // FILTER(?jahr <= .... && ?jahr >= ...) # Zeitliche Einschr‰nkung
 	   	   param2 += ' FILTER(' ;
 	   	   if(me.jahrVor.value !='') {
 	   	   	   param2 += '%3Fjahr <= '+ me.jahrVor.value ;
@@ -100,47 +93,53 @@ function addParamsExt(me) {
 	   	   }
 	   	   param2 +=')';
 	   }
+	   //  # Einschr√§nkung auf Konto (incl. Unterkonten)	   
 	   if(me.konto.value != '') {
-	   	   param2 +=' %3Fentry bk:account ' + me.konto.value + ' . ' //  # Einschr‰nkung auf Konto (incl. Unterkonten)
-	   	   /* FixMe: bk:account oder bk:path?
-	   	   bk:account hat keinen Toplevel, daf¸r ein sauberer Graph.
-	   	   bk:path ist Volltext und damit potentiell langsamer, damit ich mit einer rechts trunkierten Suche alles erwischen kann
-	   	   Alle: /*
-	   	   Konto: path* 
-	   	   
-	   	          ?text bds:search "jarlon zunfftmeister" ; 
-      		bds:matchAllTerms "true" . 
-    	?entry bk:mainAccount ?konto .
-    ?konto bk:accountPath ?pfad .
-      ?pfad bds:search "/*" .
-
-	   	   */ 
-	   	   // ??? Liste von Konten
+	   	   param2 +=' %3Fentry bk:account ' + me.konto.value + ' . ' ;
 	   }
+	   // # Einschr√§nkung nach Betr√§gen
 	   if(me.betrag.value != '') {
-	   	   /* FixMe: Betrag mit auf negative und positive Werte neutralisieren! */
-	   	   param2 += ' FILTER(%3Fbetrag ' + me.betragsoperator.value + ' ' + me.betrag.value + ')'; // # W‰hrungsumrechnungen mit ber¸ckichtigen? 
-	   	   // FixMe: Sicherstellen, daﬂ betrag eine Zahl ist
-	   	   //ToDo: betragsoperatoren wie "zwischen" und "ca" ( > x*0.95 && < )x*1.05 auswerten
+          // Sicherstellen, da√ü betrag eine Zahl ist
+          if(me.betragsoperator.value == 'zwischen') {
+          //betragsoperator "zwischen" auswerten:
+          /* Syntax: Zahl irgendwas Zahl */
+              var zwischen = /\b([0-9,.]+)\b.+\b([0-9,.]+)\b/;
+              var betraege = zwischen.exec(me.betrag.value) ;
+              param2 +=' FILTER(abs(%3Fbetrag) >= ' + betraege[1] + ' %26%26 abs(%3Fbetrag) <= ' + betraege[2] + ' )' ;
+          }
+          else if(Math.abs(Number(me.betrag.value)) > 0) {
+              if(me.betragsoperator.value =='circa') {
+                param2 +=' FILTER(abs(%3Fbetrag) > ' + (Number(me.betrag.value) * 0.95) + ' %26%26 abs(%3Fbetrag) < ' + (Number(me.betrag.value) * 1.05) + ')'; // # W√§hrungsumrechnungen mit ber√ºckichtigen?
+              }
+              else {
+                param2 += ' FILTER(abs(%3Fbetrag) ' + me.betragsoperator.value + ' ' + me.betrag.value + ')'; // # W√§hrungsumrechnungen mit ber√ºckichtigen?
+              }
+          }
+          else {
+            alert("Der Betrag '" + me.betrag.value + "' kann nur ber√ºcksichtigt werden, wenn er eine Zahl ist.");
+          }
 	   }
 		
-		
+		// Und hier bauen wir das ganze zusammen und √ºbergeben es
 		me.params.value="%241|" + me.Stichwort.value + ";%242|" + param2 ;
-		alert("http://gams.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?params=" + me.params.value) ; //Debug
-		me.Stichwort.setAttribute("disabled", "disabled");
-		return true;
-	
+		//alert("http://glossa.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/getXML?params=" + me.params.value); //Debug
+        window.location.href="http://glossa.uni-graz.at/archive/objects/query:srbas.search/methods/sdef:Query/get?params=" + me.params.value;
+        return false;	
 }
 
 /* Ein Objekt mit den ganzen Funktionen? */
 
 function searchTerms(stichwort) {
 	// alert("Stichwort:" + stichwort);
-	/* gibt einen Array der Stichwˆrter und der Operatoren zur¸ck */
+	/* gibt einen Array der Stichw√∂rter und der Operatoren zur√ºck */
 	var result = new Array() ;
 	/* Die Stichwoerter: */
 	var Stichwoerter= stichwort.split(" ");
-	/* und noch die Operatoren extrahieren, d.h. einleitende Zeichen, wenn sie + = und, - = nicht oder | = oder sind: */
+	/* und noch die Operatoren extrahieren, d.h. einleitende Zeichen wie folgt:
+		+ = mu√ü vorkommen 
+		- = darf nicht vorkommen 
+		| = kann vorkommen, mu√ü aber nicht
+	*/
 	var operators = new Array() ;
 	for(i = 0; i < Stichwoerter.length; i++){
 		//alert("|"+Stichwoerter[i]+"|");

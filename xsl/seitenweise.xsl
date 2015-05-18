@@ -52,9 +52,10 @@
     <!-- Beispiel: -->
     <xsl:template match="/">
         <xsl:variable name="pbs" select="//t:body//t:pb"/>
-        <xsl:variable name="pb-a" select="$pbs[1]"/> <!-- Ab hier soll ausgegeben werden -->
+        <xsl:variable name="pb-a" select="$pbs[5]"/> <!-- Ab hier soll ausgegeben werden -->
         <!-- Seitenfragment: -->
-        <xsl:variable name="seite" select="rem:fragment($pb-a, $pb-a/following::t:pb[1], $pb-a/ancestor::node()[. = $pb-a/following::t:pb[1]/ancestor::node()][1])"/>
+        <xsl:variable name="seite" select="rem:fragment($pb-a, $pb-a/following::t:pb[1], //t:div[@xml:id='d2e142'])"/>
+        <!--     $pb-a/ancestor::node()[. = $pb-a/following::t:pb[1]/ancestor::node()][1]   -->
         <html>
             <head/>
             <body>
