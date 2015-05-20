@@ -10,7 +10,7 @@ $(document).ready(function () {
                 this.checked = true; //select all checkboxes with class "case"
 /*                console.log ( "add-ms" ) ;*/
                 var par = $(this.closest(".entry")) ;
-                if ( par.attr('data-uri') ) {db.addEntry(par.attr('data-uri'),par.attr('data-type'), par.attr('data-account'), par.attr('data-amount'), par.attr('data-unit'));}
+                if ( par.attr('data-uri') ) {db.addEntry(par.attr('data-uri'),par.attr('data-type'), par.attr('data-account'), par.attr('data-amount'), par.attr('data-unit'), par.attr('data-year'), $(par[0].innerHTML)[2].textContent.trim());}
             });
         } else {
             $(inputs).each(function () {
@@ -22,8 +22,5 @@ $(document).ready(function () {
             });
         }
         db.saveToLocalStorage () ;
-/*        $(Datenkorb-Werte).wert = db.getSum() ;*/
-/*        console.log ( db.db );*/
-/*        console.log ( localStorage['srbasket'] ) ;*/
     });
 });

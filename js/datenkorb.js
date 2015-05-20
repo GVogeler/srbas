@@ -1,11 +1,12 @@
 var db = new Databasket() ;
+/*console.log ( "======  Debug: Zurücksetzen des LocalStorage ========" );*/
+/*db.empty() ;*/
+/*console.log ( db.db ) ;*/
+/*console.log ( localStorage['srbasket'] ) ;*/
+console.log ( "ToDo: db.empty auf einen Button im Datenkorb legen ") ;
+/* ToDo: Zu ersetzen durch Laden des LocalStorage und Anzeige der entsprechenden Inputs (evtl. über selectMultiple.js?)*/
+console.log ( "==============" );
 $(document).ready(function() { 
-    console.log ( "======  Debug: Zurücksetzen des LocalStorage ========" );
-    db.empty() ;
-    console.log ( db.db ) ;
-    console.log ( localStorage['srbasket'] ) ;
-    console.log ( "ToDo: db.empty auf einen Button im Datenkorb legen ") ;
-    console.log ( "==============" );
     $("#entries").on('change',function(evt) {
         /* evt = Kontext des Events */
         var me = $(evt.target) ;
@@ -14,29 +15,22 @@ $(document).ready(function() {
             if(me.prop('checked')) {
                 console.log ( "add" ) ;
                 var par = $(me.closest(".entry")) ;
-/*                console.log ( $(me).closest(".entry") ) ;*/
-                db.addEntry(par.attr('data-uri'),par.attr('data-type'), par.attr('data-account'), par.attr('data-amount'), par.attr('data-unit'));
+/* FixMe: Add/Delete-Aktionen mit Speichern werden auch in multipleSelect verwendet - kann ich das vereinfachen? */
+                db.addEntry(par.attr('data-uri'),par.attr('data-type'), par.attr('data-account'), par.attr('data-amount'), par.attr('data-unit'), par.attr('data-year'), $(par[0].innerHTML)[2].textContent.trim());
             }
             else {
                 console.log ( "delete" ) ;
                 var par = $(me.closest(".entry")) ;
-/*                console.log ( $(me).closest(".entry") ) ;*/
                 db.deleteEntry(par.attr('data-uri'));
             }
         }
         db.saveToLocalStorage () ;
-/*        $(Datenkorb-Werte).wert = db.getSum() ;*/
-/*        console.log ( db.db );*/
-/*        console.log ( localStorage['srbasket'] ) ;*/
+        console.log ( db.db );
+        /* console.log ( localStorage['srbasket'] ) ;*/
         /* Berechne die Anzeige */
-            var summenHTML = "" ;
-            var summe = 0 ;
-            summe= db.sum() ;
-            summenHTML = summenHTML + "<p>Gesamtsumme: " + summe + "</p>" ;
-            /*summe = parseAndSum($('p'),'bk:total') + parseAndSum($('p'),'bk:total') ;
-            summenHTML = summenHTML + "<p>Summensumme: " + summe + "</p>" ;*/
-            $("#calculations").html(summenHTML);
+        db.showTotals() ;
     }) ;
+    db.showTotals() ;
 });
 
 function Databasket() {
@@ -45,6 +39,8 @@ function Databasket() {
         deleteEntry
         read-from-local-storage
         save-to-local-storage
+        sum (Teil- bzw. Gesamtsummen ziehen)
+        showTotals (im Datenkorb)
         
        Werte:
         Liste von Objekten mit den Daten aus .entry-HTML-Elementen
@@ -55,19 +51,22 @@ function Databasket() {
             data-amount="0" 
             data-unit="d."
             data-account-uri="http://gams.uni-graz.at/rem/#bs_..."
-            data-jahr="1535"
+            data-year="1535"
+            Text? = 
             
             ToDo: account-uri und jahr noch übernehmen
     */
     
     /* Methoden:*/
-        this.addEntry = function (uri, type, account, amount, unit) {
+        this.addEntry = function (uri, type, account, amount, unit, jahr, text) {
              var data = { 
                 "uri" : uri, 
                 "type": type, 
                 "account": account, 
                 "amount": amount,
-                "unit": unit
+                "unit": unit,
+                "year": jahr,
+                "text": text
                 }
              this.db[uri]= data ;
         } ;
@@ -79,7 +78,7 @@ function Databasket() {
         
         this.empty = function () {
             localStorage.removeItem('srbasket') ;
-            /* ... ToDo: und dann noch das db-Objekt zurücksetzen */
+            this.db = {};
        }
         
         this.readFromLocalStorage = function () {
@@ -91,21 +90,49 @@ function Databasket() {
             localStorage['srbasket'] = JSON.stringify( this.db ) ;            
         } ;
         
-        this.sum = function ()  {
-            /* Übernimm das aus bookkeeping.parseAndSum etc. */
-/*            console.log ( this ) ;*/
-            $(this).each(function() {
-/*                console.log ( this.id ) ;*/
-            }
+        /* Summen ziehen */
+        this.sum = function (year)  {
+            year = typeof year !== 'undefined' ? year : 0; //0 = alle
+            /* ToDo: Auswahl, ob Summen nach Jahren oder Konten gezogen wird */
+            /*  console.log ( "Summierung: " + year );*/
+            var sum = 0 ;
+            $.each(this.db, function(index, value) {
+                if(value['year'] == year || year == 0) {
+                    sum+=parseFloat(value['amount']) || 0;
+                }
+              }
             );
+            return sum ;
+        }
+        
+        /* gezogene Summen in Text umwandeln */
+        this.showTotals = function () {
+            var summenHTML = "" ;
+            /* Teilsummen nach Jahren: */
+            var jahre = {} ;
+            $.each(this.db, function(index, value) {
+                    jahre[value['year']] = 0;
+                }
+            );
+            /* Die Jahresangaben müssen numerisch sortiert sein bevor für jedes eine Zeile geschrieben wird */
+            arr_jahre = [], arr_jahre.length = 0 ;
+            for (var jahr in jahre) {
+                arr_jahre.push(parseInt(jahr)) ;
+             }
+            arr_jahre.sort() ;
+            for (i = 0; jahr = arr_jahre[i], i < arr_jahre.length; i++) {
+                summenHTML += '<tr class="datenkorb jahr"><td>' + jahr + "/" + (parseInt(jahr) + 1) + ':</td><td class="datenkorb betrag">' + this.sum(jahr) + " d.</td></tr>" ;
+            }
+            summenHTML += '<tr class="datenkorb gesamt"><td>Gesamt:</td><td class="datenkorb betrag">' + this.sum() + " d.</td></tr>" ;
+            summenHTML = '<table class="datenkorb">' + summenHTML + "</table>" ;
+            $("#calculations").html(summenHTML);
         }
 
     this.db = {};
     this.readFromLocalStorage () ;
     Object.keys(this.db).forEach(function(key) {
-/*        console.log ($("*[data-uri='" + key + "']"));*/
-        $("*[data-uri='" + key + "']").find('input:checkbox.checkAll').attr('checked',true );
-    })
-/*    console.log ( Object.keys(this.db) ) ;*/
+        $("*[data-uri='" + key + "']").find('input:checkbox.select_entry').attr('checked',true );
+    }) //Checkboxen nach Datenkorb anwählen
+    this.showTotals() ; //Summen als Datenkorbinhalt
 }
 
