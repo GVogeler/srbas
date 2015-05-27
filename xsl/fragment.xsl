@@ -39,8 +39,8 @@
                 .//descendant-or-self::*/generate-id()=$bis/generate-id()
                 )
                 ]|text()[.=$intersect or 
-                following::*/generate-id()=$bis/generate-id() or
-                preceding::*/generate-id()=$von/generate-id()
+                (following::*/generate-id()=$bis/generate-id() and
+                preceding::*/generate-id()=$von/generate-id())
                 ]" mode="fragment"/>
         </xsl:copy>
     </xsl:template>
