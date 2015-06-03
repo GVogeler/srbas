@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:bas="http://gams.uni-graz.at/srbas/ns/1.0"
     exclude-result-prefixes="#default bk tei"
     version="2.0">
     <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
@@ -184,7 +185,7 @@
                     <xsl:variable name="test" select="."/>
                     <xsl:apply-templates select="." mode="tab-debug"/>
                 </xsl:for-each>
-                <xsl:apply-templates select="$liste/closer" mode="tab-debug"/>
+                <xsl:apply-templates select="$liste/tei:closer" mode="tab-debug"/>
             </xsl:when>
             <xsl:otherwise>
                 <tr id="{@xml:id}">
@@ -234,7 +235,8 @@
     </xsl:template>
     
     <xsl:template match="tei:pb" mode="tab-debug">
-       <tr id="{@xml:id}"><td><span class="pb">[<xsl:value-of select="@xml:id"/>]</span></td><td colspan="3"><span class="pb">-------------------------------------------------------------------------</span></td></tr>
+        <xsl:variable name="seitenzahl" select="bas:folioangabe(.)"/>
+       <tr id="{@xml:id}"><td><span class="pb">[fol. <xsl:value-of select="$seitenzahl"/>]</span></td><td colspan="3"><span class="pb">-------------------------------------------------------------------------</span></td></tr>
     </xsl:template>
     
     <xsl:template name="test-for-id">

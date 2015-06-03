@@ -709,15 +709,15 @@
                 <!-- Die Summe aller untergeordneten tei:measure -->
                 <!-- Die Währungseinheiten müßten noch über Variablen externalisiert werden -->
                 <xsl:value-of
-                    select="format-number(sum(bk:umrechnung(./tei:num/@value,./@unit))
+                    select="sum(bk:umrechnung(./tei:num/@value,./@unit))
                     + sum(sum(.//tei:measure[./@type='currency']/bk:umrechnung(tei:num/@value,@unit)))
                     +     sum(.//tei:measure[./@type='currency' and ./@quantity]/bk:umrechnung(@quantity, @unit))
                     +  sum(.//tei:measure[not(@quantity or tei:num) and string(number(substring-before(text()[1],' '))) != 'NaN']/bk:umrechnung(number(substring-before(text()[1],' ')), ./@unit))
-                    ,'###.###','european')"
+                    "
                 />
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="format-number(bk:umrechnung(./@quantity, ./@unit),'###.###','european')"/>
+                <xsl:value-of select="bk:umrechnung(./@quantity, ./@unit)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

@@ -40,6 +40,7 @@
                     }
                     .addSpan {
                     background-color: 90EE90;
+                    }
                 </style>
             </head>
             <body>
