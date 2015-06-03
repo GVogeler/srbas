@@ -4,6 +4,7 @@
     xmlns:bk="http://gams.uni-graz.at/rem/bookkeeping/" xmlns:tei="http://www.tei-c.org/ns/1.0"
     exclude-result-prefixes="#default bk tei"
     version="2.0">
+    <xsl:decimal-format name="european" decimal-separator=',' grouping-separator='.' />
     <!-- Ausgabe als Tabelle für DebuggingZwecke
         
         2015-03-25: Hervorhebung für addSpan
@@ -68,13 +69,16 @@
                     <xsl:variable name="vtextBN-MandN" select="$vtextPostM[count(.|$vtextPreN) = count($vtextPreN)]"/>
                     
                     Ist aber sehr teuer (50 Seiten/ca. 40 Seitensummen, auch mit der erste gemeinsame Ancestor-Knoten ./preceding::tei:pb[1]/ancestor::tei:*[current()][1}
+                    
+                    Umstellen auf fragment.xsl?
                     -->
                     <xsl:variable name="bis" select="./@xml:id"/>
                     <xsl:variable name="commonAncestor" select="./preceding::tei:pb[1]/ancestor::tei:*[.//tei:*[@xml:id=$bis]][1]"/>
                     <xsl:variable name="von" select="preceding::tei:pb[1]/@xml:id"/>
                     <xsl:variable name="NachVon" select="$commonAncestor//tei:*[preceding::tei:*[@xml:id=$von] and matches(@ana,'#bk_entry')]"/>
                     <xsl:variable name="VorBis" select="$commonAncestor//tei:*[following::tei:*[@xml:id=$bis] and matches(@ana,'#bk_entry')]"/>
-                    <xsl:variable name="InBeträgeUmzuwandeln" select="$NachVon[count(.|$VorBis) = count($VorBis)]"/>                       <xsl:for-each select="$InBeträgeUmzuwandeln">
+                    <xsl:variable name="InBeträgeUmzuwandeln" select="$NachVon[count(.|$VorBis) = count($VorBis)]"/>
+                    <xsl:for-each select="$InBeträgeUmzuwandeln">
                         <betrag><xsl:call-template name="betrag"/></betrag>                        
                     </xsl:for-each>
                 </xsl:when>
@@ -103,13 +107,13 @@
             -->
             <td class="Buchungsbetrag Summe grid {$correct}"><xsl:apply-templates select="tei:*[@ana='#bk_amount']" mode="tab-debug"/></td>
             <td class="ErrechneteSumme Summe grid {$correct}">
-                <xsl:value-of select="$sumCalc"/>
+                <xsl:value-of select="format-number(number($sumCalc),'###.###', 'european')"/>
             </td>
         </tr>
     </xsl:template>
     
-    <xsl:template mode="tab-debug" match="tei:*[@ana='#bk_entry']">
-        <!-- Die einzelnen Buchungssätze -->
+<!--    <xsl:template mode="tab-debug" match="tei:*[@ana='#bk_entry']">
+        <!-\- Die einzelnen Buchungssätze -\->
         <tr>
             <td/>
             <td><xsl:attribute name="class">Buchungstext grid<xsl:if test="preceding-sibling::*[1]/name()='addSpan'"><xsl:text> addSpan</xsl:text></xsl:if></xsl:attribute><xsl:apply-templates select="."/></td>
@@ -141,9 +145,56 @@
                     <td class="Buchungsbetrag grid"><xsl:apply-templates select=".//tei:*[@ana='#bk_amount']" mode="tab-debug"/></td>
                 </xsl:otherwise>
             </xsl:choose>
-            <!-- Die Stichwörter -->
-            <xsl:apply-templates select=".//tei:term"/>
         </tr>
+    </xsl:template>-->
+    
+    <xsl:template mode="tab-debug" match="tei:*[@ana='#bk_entry']">
+        <!-- FixMe: hier müßte ich eigentlich wieder die blöde Fragmentierung einsetzen:
+            1. Baue eine Zeile für jeden Eintrag
+            2. Wenn ein Eintrag einen anderne Eintrag enthält (total|entry), dann baue
+                a. eine Zeile für den Teil vor dem inneren Eintrag
+                b. eine Zeile für den inneren Eintrag
+                c. eine Zeile für den Rest des Eintrags
+                
+             Könnte es auch mehrere Einschübe geben?
+            -->
+        <xsl:choose>
+            <xsl:when test=".//tei:*[matches(@ana,'#(bk|gl)_(total|entry)')]">
+                <xsl:variable name="einschub" select="(tei:*[matches(@ana,'#(bk|gl)_(total|entry)')]|tei:pb)"/>
+                <xsl:variable name="liste">
+                    <xsl:element name="opener" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:attribute name="xml:id" select="@xml:id"/>
+                        <xsl:attribute name="ana">#bk_entry</xsl:attribute>
+                        <xsl:copy-of select="(node()|text()) intersect ($einschub[1]/preceding-sibling::*|$einschub[1]/preceding-sibling::text())"/>
+                    </xsl:element>
+                   <!-- <xsl:for-each select="$einschub">
+                        <xsl:element name="{name()}" namespace="http://www.tei-c.org/ns/1.0">
+                            <xsl:attribute name="xml:id" select="@xml:id"/>
+                            <xsl:attribute name="ana" select="@ana"/>
+                            <xsl:copy-of select="(node()|text())"/>
+                        </xsl:element>
+                    </xsl:for-each>-->
+                    <xsl:element name="closer" namespace="http://www.tei-c.org/ns/1.0">
+                        <xsl:attribute name="ana">#bk_entry</xsl:attribute>
+                        <xsl:copy-of select="(node()|text()) intersect ($einschub[last()]/following-sibling::*|$einschub[last()]/following-sibling::text())"/>
+                    </xsl:element>
+                </xsl:variable>
+                <xsl:apply-templates select="$liste/tei:opener" mode="tab-debug"/>
+                <xsl:for-each select="(tei:*[matches(@ana,'#(bk|gl)_(total|entry)')]|tei:pb)">
+                    <xsl:variable name="test" select="."/>
+                    <xsl:apply-templates select="." mode="tab-debug"/>
+                </xsl:for-each>
+                <xsl:apply-templates select="$liste/closer" mode="tab-debug"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <tr id="{@xml:id}">
+                    <td/>
+                    <td class="Buchungstext grid"><xsl:apply-templates select="(text()|tei:*[not(matches(@ana,'#(bk|gl)_(total|entry)') or ./name()='pb' or ./name()='fw')])"/></td>
+                    <td class="Buchungsbetrag grid right"><xsl:apply-templates select="(tei:*[matches(@ana,'#(bk|gl)_amount')] | .//tei:*[not(matches(@ana,'#(bk|gl)_(entry|total)'))]//tei:*[matches(@ana,'#(bk|gl)_amount')])" mode="tab"/></td>
+                    <td><xsl:apply-templates mode="tab-reduce" select="(tei:*[matches(@ana,'#(bk|gl)_amount')] | .//tei:*[not(matches(@ana,'#(bk|gl)_(entry|total)'))]//tei:*[matches(@ana,'#(bk|gl)_amount')])"/></td>
+                </tr>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="tei:p[not(matches(@ana,'#bk_'))]|tei:body/tei:note|tei:body/tei:head|tei:body//tei:fw" priority="-1" mode="tab-debug">
@@ -183,18 +234,7 @@
     </xsl:template>
     
     <xsl:template match="tei:pb" mode="tab-debug">
-        <xsl:variable name="seitenzahl">
-            <xsl:choose>
-                <xsl:when test="@n"><xsl:value-of select="@n"/></xsl:when>
-                <xsl:otherwise><xsl:value-of select="ceiling((count(preceding::tei:pb) + 1) div 2)"/>
-                    <xsl:choose>
-                        <xsl:when test="(count(preceding::tei:pb) + 1) mod 2 = 1">r</xsl:when>
-                        <xsl:otherwise>v</xsl:otherwise></xsl:choose></xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <!-- vorhergehende / folgende Seite? -->
-        <xsl:choose><xsl:when test="ancestor::tei:p or ancestor::tei:item"><a name="{generate-id()}"/><span class="pb">[fol. <xsl:value-of select="seitenzahl"/>] -------------------------------------------------------------------------</span></xsl:when>
-            <xsl:otherwise><tr><td><a name="{generate-id()}"/><span class="pb">[fol. <xsl:value-of select="$seitenzahl"/>]</span></td><td colspan="3"><span class="pb">-------------------------------------------------------------------------</span></td></tr></xsl:otherwise></xsl:choose>
+       <tr id="{@xml:id}"><td><span class="pb">[<xsl:value-of select="@xml:id"/>]</span></td><td colspan="3"><span class="pb">-------------------------------------------------------------------------</span></td></tr>
     </xsl:template>
     
     <xsl:template name="test-for-id">

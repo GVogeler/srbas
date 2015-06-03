@@ -3,9 +3,8 @@ var db = new Databasket() ;
 /*db.empty() ;*/
 /*console.log ( db.db ) ;*/
 /*console.log ( localStorage['srbasket'] ) ;*/
-console.log ( "ToDo: db.empty auf einen Button im Datenkorb legen ") ;
-/* ToDo: Zu ersetzen durch Laden des LocalStorage und Anzeige der entsprechenden Inputs (evtl. über selectMultiple.js?)*/
-console.log ( "==============" );
+/*console.log ( "ToDo: db.empty auf einen Button im Datenkorb legen ") ;*/
+/*console.log ( "==============" );*/
 $(document).ready(function() { 
     $("#entries").on('change',function(evt) {
         /* evt = Kontext des Events */
@@ -13,22 +12,21 @@ $(document).ready(function() {
         if ( me.hasClass('select_entry') ) {
 /*            console.log ( me.prop('checked') ) ;*/
             if(me.prop('checked')) {
-                console.log ( "add" ) ;
+/*                console.log ( "add" ) ;*/
                 var par = $(me.closest(".entry")) ;
 /* FixMe: Add/Delete-Aktionen mit Speichern werden auch in multipleSelect verwendet - kann ich das vereinfachen? */
                 db.addEntry(par.attr('data-uri'),par.attr('data-type'), par.attr('data-account'), par.attr('data-amount'), par.attr('data-unit'), par.attr('data-year'), $(par[0].innerHTML)[2].textContent.trim());
             }
             else {
-                console.log ( "delete" ) ;
+/*                console.log ( "delete" ) ;*/
                 var par = $(me.closest(".entry")) ;
                 db.deleteEntry(par.attr('data-uri'));
             }
         }
         db.saveToLocalStorage () ;
-        console.log ( db.db );
+/*        console.log ( db.db );*/
         /* console.log ( localStorage['srbasket'] ) ;*/
         /* Berechne die Anzeige */
-        db.showTotals() ;
     }) ;
     db.showTotals() ;
 });
@@ -52,9 +50,9 @@ function Databasket() {
             data-unit="d."
             data-account-uri="http://gams.uni-graz.at/rem/#bs_..."
             data-year="1535"
-            Text? = 
+            Text = td[2].textContent 
             
-            ToDo: account-uri und jahr noch übernehmen
+            FixMe: account-uri übernehmen?
     */
     
     /* Methoden:*/
@@ -88,6 +86,7 @@ function Databasket() {
         } ;
         this.saveToLocalStorage = function () {
             localStorage['srbasket'] = JSON.stringify( this.db ) ;            
+            this.showTotals() ;
         } ;
         
         /* Summen ziehen */
@@ -135,4 +134,3 @@ function Databasket() {
     }) //Checkboxen nach Datenkorb anwählen
     this.showTotals() ; //Summen als Datenkorbinhalt
 }
-

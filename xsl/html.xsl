@@ -9,7 +9,8 @@
     <xsl:import href="default.xsl"/>
     <xsl:import href="tab_debug.xsl"/>
     <xsl:import href="tab.xsl"/> <!-- Alle templates mit mode="tab" -->
-    <xsl:import href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>
+    <xsl:import href="http://gams.uni-graz.at/rem/Umrechnungselemente.xsl"/>
+<!--    <xsl:import href="http://gams.uni-graz.at/archive/objects/cirilo:srbas/datastreams/STYLESHEET.CONVERSIONS/content"/>-->
     <xsl:param name="context"/>  <!-- = Suchparameter -->
     <xsl:param name="mode"/>
     <xsl:param name="locale"/>
